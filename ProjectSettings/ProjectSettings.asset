@@ -3,7 +3,7 @@
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
+  serializedVersion: 3
   AndroidProfiler: 0
   defaultScreenOrientation: 4
   targetDevice: 2
@@ -11,11 +11,11 @@ PlayerSettings:
   targetResolution: 0
   accelerometerFrequency: 60
   companyName: Unity Technologies
-  productName: Unity Remote 4
+  productName: Aerosolt
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  defaultScreenWidth: 1024
-  defaultScreenHeight: 768
+  defaultScreenWidth: 1920
+  defaultScreenHeight: 1080
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_RenderingPath: 1
@@ -27,7 +27,7 @@ PlayerSettings:
   m_Stereoscopic3D: 0
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
-  displayResolutionDialog: 1
+  displayResolutionDialog: 2
   allowedAutorotateToPortrait: 1
   allowedAutorotateToPortraitUpsideDown: 1
   allowedAutorotateToLandscapeRight: 1
