@@ -1,0 +1,49 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Library/
+Assets/Elementals/
+
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
+*.unity
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+Library/assetDatabase3
+
+Library/metadata/24/24465e7bd39f743bb8364b9e98122817
+
+Library/ScriptAssemblies/Assembly-CSharp.dll
+
+Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
+Assets/Materials/unnamed.mat.meta
+
+Assets/Elementals.meta
+
+*.unity
+
+*.unity
