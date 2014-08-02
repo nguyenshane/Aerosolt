@@ -15,7 +15,7 @@ public class Aim : MonoBehaviour {
 			animation.Play("Aim");
 		} else if (Input.GetAxis("Fire1") <= 0){
 			animation["Aim"].wrapMode = WrapMode.Once;
-			animation.Play("UnAim");
+			//animation.Play("UnAim");
 		}
 	}
 }
