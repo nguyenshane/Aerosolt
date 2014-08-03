@@ -1,6 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
+/*
+ * Handles all GUI drawing:
+ * Minimap
+ */
+
 public class GUIController : MonoBehaviour
 {
 	public Texture minimap;
