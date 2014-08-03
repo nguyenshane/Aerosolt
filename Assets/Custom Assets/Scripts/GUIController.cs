@@ -4,6 +4,9 @@ using System.Collections;
 /*
  * Handles all GUI drawing:
  * Minimap
+ * Reticule
+ * Health and ammo indicators (TBA)
+ * Objectives (TBA)
  */
 
 public class GUIController : MonoBehaviour
@@ -11,20 +14,23 @@ public class GUIController : MonoBehaviour
 	public Texture minimap;
 	public float minimapScale = 1.0f;
 	public int minimapPadding = 32;
+	public float minimapAlpha = 0.75f;
 	public Texture minimapIndicator;
 	public float indicatorScale = 1.0f;
 	public float gameworldSize = 100; //size in the ortho minimap camera used to get the minimap texture
-	public float minimapAlpha = 0.75f;
+	public Texture reticule;
+	public float reticuleScale = 1.0f;
 
 	const int minimapBaseSize = 256;
-	const int indicatorBaseSize = 32;
+	const int indicatorBaseSize = 16;
+	const int reticuleBaseSize = 16;
 
 	int screenWidth, screenHeight;
 	float screenRatio;
 	Rect minimapLocation;
-	int minimapSize, indicatorSize;
+	int minimapSize, indicatorSize, reticuleSize;
 	GameObject player;
-	Color guiColor = Color.white;
+	Color minimapTint = Color.white;
 
 	void Start() {
 		player = GameObject.Find("First Person Controller");
@@ -36,9 +42,10 @@ public class GUIController : MonoBehaviour
 
 		minimapSize = (int)(minimapBaseSize * screenRatio * minimapScale);
 		indicatorSize = (int)(indicatorBaseSize * screenRatio * indicatorScale);
+		reticuleSize = (int)(reticuleBaseSize * screenRatio * reticuleScale);
 		minimapPadding = (int)(minimapPadding * screenRatio);
 
-		guiColor.a = minimapAlpha;
+		minimapTint.a = minimapAlpha;
 
 
 		//Top right
@@ -59,10 +66,12 @@ public class GUIController : MonoBehaviour
 	}
 
 	void OnGUI() {
-		GUI.color = guiColor;
+		GUI.color = minimapTint;
 
 		//Draw minimap
 		GUI.DrawTexture(minimapLocation, minimap, ScaleMode.ScaleToFit);
+
+		GUI.color = Color.white;
 
 		//Draw player position indicator
 		Rect indicatorLocation = new Rect(minimapLocation.left + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.top + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
@@ -71,6 +80,7 @@ public class GUIController : MonoBehaviour
 		GUI.DrawTexture(indicatorLocation, minimapIndicator, ScaleMode.ScaleToFit);
 		GUI.matrix = backup;
 
-		GUI.color = Color.white;
+		//Draw reticule
+		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
 	}
 }
