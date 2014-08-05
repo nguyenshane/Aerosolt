@@ -16,11 +16,11 @@ QualitySettings:
     shadowDistance: 15
     blendWeights: 1
     textureQuality: 1
-    anisotropicTextures: 0
+    anisotropicTextures: 2
     antiAliasing: 0
     softParticles: 0
-    softVegetation: 0
-    vSyncCount: 0
+    softVegetation: 1
+    vSyncCount: 1
     lodBias: .300000012
     maximumLODLevel: 0
     particleRaycastBudget: 4
@@ -120,14 +120,4 @@ QualitySettings:
     maximumLODLevel: 0
     particleRaycastBudget: 4096
     excludedTargetPlatforms: []
-  m_PerPlatformDefaultQuality:
-    Android: 2
-    BlackBerry: 0
-    FlashPlayer: 3
-    GLES Emulation: 3
-    PS3: 3
-    Standalone: 4
-    Web: 3
-    Wii: 3
-    XBOX360: 3
-    iPhone: 2
+  m_PerPlatformDefaultQuality: {}
