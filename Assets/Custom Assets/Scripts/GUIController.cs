@@ -7,10 +7,12 @@ using System.Collections;
  * Reticule
  * Health and ammo indicators (TBA)
  * Objectives (TBA)
+ * Framerate (if enabled)
  */
 
 public class GUIController : MonoBehaviour
 {
+	public bool showFramerate = false;
 	public Texture minimap;
 	public float minimapScale = 1.0f;
 	public int minimapPadding = 32;
@@ -85,5 +87,7 @@ public class GUIController : MonoBehaviour
 
 		//Draw reticule
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
+
+		if (showFramerate) GUI.Label(new Rect(32 * screenRatio, 32 * screenRatio, 400 * screenRatio, 400 * screenRatio), (1 / Time.deltaTime).ToString());
 	}
 }
