@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour {
 			break;
 
 		default:
-			Destroy(gameObject);
+			//Destroy(gameObject);
 			break;
 		}
 	}
