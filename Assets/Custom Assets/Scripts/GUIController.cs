@@ -31,6 +31,7 @@ public class GUIController : MonoBehaviour
 	int minimapSize, indicatorSize, reticuleSize;
 	GameObject player;
 
+	/*
 	GameObject GUIRenderObject;
 	RenderTexture GUIRenderTexture;
 	OVRGUI guiHelper;
@@ -38,9 +39,11 @@ public class GUIController : MonoBehaviour
 	private OVRCameraController CameraController = null;
 	// Handle to OVRPlayerController
 	private OVRPlayerController PlayerController = null;
+	*/
 
 	Color minimapTint = Color.white;
 
+	/*
 	void Awake()
 	{
 		// Find camera controller
@@ -66,9 +69,13 @@ public class GUIController : MonoBehaviour
 			PlayerController = PlayerControllers[0];
 		
 	}
+	*/
 
 	void Start() {
 		player = GameObject.Find("First Person Controller");
+
+		/*
+		//Oculus stuff
 		GUIRenderObject = GameObject.Instantiate(Resources.Load("OVRGUIObjectMain")) as GameObject;
 		guiHelper = new OVRGUI();
 
@@ -123,6 +130,7 @@ public class GUIController : MonoBehaviour
 		}
 
 		GUIRenderObject.SetActive(true);
+		*/
 
 		screenWidth = Screen.width;
 		screenHeight = Screen.height;
@@ -174,7 +182,7 @@ public class GUIController : MonoBehaviour
 		GUI.color = Color.white;
 
 		//Draw player position indicator
-		Rect indicatorLocation = new Rect(minimapLocation.left + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.top + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
+		Rect indicatorLocation = new Rect(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
 		Matrix4x4 backup = GUI.matrix;
 		GUIUtility.RotateAroundPivot(player.transform.eulerAngles.y, new Vector2(indicatorLocation.x + indicatorLocation.width / 2, indicatorLocation.y + indicatorLocation.height / 2));
 		GUI.DrawTexture(indicatorLocation, minimapIndicator, ScaleMode.ScaleToFit);
@@ -183,7 +191,8 @@ public class GUIController : MonoBehaviour
 		//Draw reticule
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
 
-/*
+
+		/*
 		//Oculus stuff
 
 		// Set the GUI matrix to deal with portrait mode
