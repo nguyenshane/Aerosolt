@@ -8,6 +8,7 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	public Transform projectile;
+	public Transform spawn;
 	public float fireDelay = 1.0f;
 	public float projectileSpeed = 6.0f;
 
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour {
 
 		if (Input.GetAxis("Fire1") > 0 && fireDelayTimer <= 0) {
 			fireDelayTimer = fireDelay;
-			Transform spawn = transform.FindChild("SquirtBottle").FindChild("Nozzle").FindChild("Tip");
+			//Transform spawn = transform.FindChild("SquirtBottle").FindChild("Nozzle").FindChild("Tip");
 
 			Projectile newProjectile = ((Transform)Instantiate(projectile, spawn.position + (transform.forward * 0.5f), Quaternion.identity)).gameObject.GetComponent<Projectile>();
 			newProjectile.rigidbody.velocity = transform.forward * projectileSpeed;

@@ -29,6 +29,10 @@ public class Projectile : MonoBehaviour {
 		case "Environment":
 			Destroy(gameObject);
 			break;
+
+		default:
+			Destroy(gameObject);
+			break;
 		}
 	}
 }
