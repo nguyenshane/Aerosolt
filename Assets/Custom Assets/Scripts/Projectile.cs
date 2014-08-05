@@ -17,6 +17,7 @@ public class Projectile : MonoBehaviour {
 	
 	}
 
+	/*
 	void OnCollisionEnter(Collision Collection) {
 		string tag = Collection.gameObject.tag;
 
@@ -30,6 +31,26 @@ public class Projectile : MonoBehaviour {
 			Destroy(gameObject);
 			break;
 
+		default:
+			//Destroy(gameObject);
+			break;
+		}
+	}
+	*/
+
+	void OnTriggerEnter(Collider Collection) {
+		string tag = Collection.gameObject.tag;
+		
+		switch (tag) {
+		case "Enemy":
+			Destroy(Collection.gameObject);
+			Destroy(gameObject);
+			break;
+			
+		case "Environment":
+			Destroy(gameObject);
+			break;
+			
 		default:
 			//Destroy(gameObject);
 			break;
