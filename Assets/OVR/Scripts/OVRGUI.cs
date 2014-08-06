@@ -198,7 +198,7 @@ public class OVRGUI
 	/// <param name="wX">W x.</param>
 	/// <param name="hY">H y.</param>
 	/// <param name="calcPosSize">Calculate position size.</param>
-	private void CalcPositionAndSize(float X, float Y, float wX, float hY,
+	public void CalcPositionAndSize(float X, float Y, float wX, float hY,
 									 ref Rect calcPosSize)
 	{
 		float sSX = (float)Screen.width / PixelWidth;	

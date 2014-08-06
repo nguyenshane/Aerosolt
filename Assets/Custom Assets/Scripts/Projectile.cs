@@ -7,20 +7,25 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
+	const float baseDamage = 1.0f;
 	const float disperseRate = 4.0f;
-	const float scaleRate = 2.5f;
-	const float gravity = 8.0f;
+	const float scaleRate = 2.5f; //size increase over time
+	const float gravity = 4.0f;
 	const float drag = 1.0f;
 
 	public Vector3 velocity;
 
 	Color initialColor;
-	Color currentColor; //used to change alpha, also determines damage amount later
+	Color currentColor; //used to change alpha, also determines damage amount
+	float damage; //actual damage done is (damage * (max(scale / target scale, 1)), should be revised to keep each projectile's damage exactly the same over time
+	float scale;
 
 	// Use this for initialization
 	void Start () {
 		initialColor = renderer.material.GetColor("_TintColor");
 		currentColor = initialColor;
+		damage = baseDamage;
+		scale = transform.localScale.x;
 	}
 	
 	// Update is called once per frame
@@ -35,10 +40,12 @@ public class Projectile : MonoBehaviour {
 
 		//Changing size
 		transform.localScale += (transform.localScale * scaleRate * time);
+		scale = transform.localScale.x;
 
-		//Changing transparency
+		//Changing transparency and damage
 		currentColor.a -= (currentColor.a * disperseRate * time);
 		renderer.material.SetColor("_TintColor", currentColor);
+		damage = baseDamage * currentColor.a;
 		if (currentColor.a <= 0.01f) Destroy(gameObject);
 	}
 
@@ -68,7 +75,7 @@ public class Projectile : MonoBehaviour {
 		
 		switch (tag) {
 		case "Enemy":
-			Destroy(Collection.gameObject);
+			Collection.gameObject.GetComponent<Enemy>().recieveDamage(damage, scale);
 			Destroy(gameObject);
 			break;
 			
