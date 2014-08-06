@@ -16,13 +16,14 @@ public class Player : MonoBehaviour {
 	const float velocityDeviation = 0.2f;
 
 	protected Animator animator;
-	CharacterController character;
+	public CharacterController character;
 	float fireDelay;
 	float fireDelayTimer;
 
 
 	// Use this for initialization
 	void Start () {
+		if(!character)
 		character = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();
 		
@@ -33,22 +34,27 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (fireDelayTimer >= 0) fireDelayTimer -= Time.deltaTime;
-		else if (Input.GetAxis("Fire1") > 0) {
-			while (fireDelayTimer < fireDelay) {
-				fireDelayTimer += fireDelay; //allows the correct number of projectiles to be fired per second regardless of framerate
+		else if (Input.GetAxis ("Aim") > 0) {
+			animator.SetBool ("Aim", true);
+			if (Input.GetAxis ("Fire1") > 0) {
+				while (fireDelayTimer < fireDelay) {
+					fireDelayTimer += fireDelay; //allows the correct number of projectiles to be fired per second regardless of framerate
 
-				Vector3 direction = transform.forward + (Random.onUnitSphere * spread);
-				direction.Normalize();
+					Vector3 direction = transform.forward + (Random.onUnitSphere * spread);
+					direction.Normalize ();
 
-				Projectile newProjectile = ((Transform)Instantiate(projectile, nozzle.position + (transform.forward * 0.5f), Quaternion.identity)).gameObject.GetComponent<Projectile>();
-				newProjectile.rigidbody.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range(-velocityDeviation, velocityDeviation)));
-			}
-		}
+					Projectile newProjectile = ((Transform)Instantiate (projectile, nozzle.position + (transform.forward * 0.5f), Quaternion.identity)).gameObject.GetComponent<Projectile> ();
+					newProjectile.rigidbody.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range (-velocityDeviation, velocityDeviation)));
+				}
+			} 
+		} else animator.SetBool("Aim", false);
 
+		/*
 		if (animator) {
 			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 			if (Input.GetAxis("Aim") > 0) animator.SetBool("Aim", true);
 			else animator.SetBool("Aim", false);
 		}
+		*/
 	}
 }
