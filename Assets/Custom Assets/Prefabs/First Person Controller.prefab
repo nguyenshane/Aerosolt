@@ -50,7 +50,6 @@ GameObject:
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400020}
   m_Layer: 0
   m_Name: First Person Controller
   m_TagString: Untagged
@@ -122,6 +121,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400012}
   - 95: {fileID: 9500000}
+  - 114: {fileID: 11400020}
   - 114: {fileID: 11400022}
   m_Layer: 0
   m_Name: windex
@@ -738,7 +738,7 @@ Animator:
   m_GameObject: {fileID: 100012}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f39e0d540315d48ca8b6d95218a15331, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a205e717c9d974e8292765360ca3041a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
+  m_GameObject: {fileID: 100012}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2916db845f6f3254b8d42dd3c34adc07, type: 3}
@@ -1014,12 +1014,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 400000, guid: 62f285d3a184e2049bc42e4dd69c09b3, type: 2}
   nozzle: {fileID: 400022}
-  fireRate: 480
+  fireRate: 960
   projectileSpeed: 12
   spread: .300000012
+  character: {fileID: 14300000}
 --- !u!114 &11400022
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100012}

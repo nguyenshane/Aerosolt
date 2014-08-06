@@ -44,10 +44,11 @@ public class Player : MonoBehaviour {
 					direction.Normalize ();
 
 					Projectile newProjectile = ((Transform)Instantiate (projectile, nozzle.position + (transform.forward * 0.5f), Quaternion.identity)).gameObject.GetComponent<Projectile> ();
-					newProjectile.rigidbody.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range (-velocityDeviation, velocityDeviation)));
+					newProjectile.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range (-velocityDeviation, velocityDeviation)));
 				}
 			} 
 		} else animator.SetBool("Aim", false);
+
 
 		/*
 		if (animator) {
