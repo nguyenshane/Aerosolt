@@ -34,20 +34,20 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (fireDelayTimer >= 0) fireDelayTimer -= Time.deltaTime;
-		else if (Input.GetAxis ("Aim") > 0) {
-			animator.SetBool ("Aim", true);
-			if (Input.GetAxis ("Fire1") > 0) {
-				while (fireDelayTimer < fireDelay) {
-					fireDelayTimer += fireDelay; //allows the correct number of projectiles to be fired per second regardless of framerate
+		else if (Input.GetAxis ("Fire1") > 0) {
+			while (fireDelayTimer < fireDelay) {
+				fireDelayTimer += fireDelay; //allows the correct number of projectiles to be fired per second regardless of framerate
+				
+				Vector3 direction = transform.forward + (Random.onUnitSphere * spread);
+				direction.Normalize ();
+				
+				Projectile newProjectile = ((Transform)Instantiate (projectile, nozzle.position + (transform.forward * 0.2f), Quaternion.identity)).gameObject.GetComponent<Projectile> ();
+				newProjectile.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range (-velocityDeviation, velocityDeviation)));
+			}
+		} 
 
-					Vector3 direction = transform.forward + (Random.onUnitSphere * spread);
-					direction.Normalize ();
-
-					Projectile newProjectile = ((Transform)Instantiate (projectile, nozzle.position + (transform.forward * 0.5f), Quaternion.identity)).gameObject.GetComponent<Projectile> ();
-					newProjectile.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range (-velocityDeviation, velocityDeviation)));
-				}
-			} 
-		} else animator.SetBool("Aim", false);
+		if (Input.GetAxis ("Aim") > 0) animator.SetBool ("Aim", true);
+		else animator.SetBool("Aim", false);
 
 
 		/*
