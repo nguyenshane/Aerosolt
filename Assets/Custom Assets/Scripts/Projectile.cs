@@ -7,14 +7,15 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
-	const float disperseRate = 2.0f;
+	const float disperseRate = 4.0f;
+	const float scaleRate = 2.5f;
 	const float gravity = 8.0f;
-	const float drag = 0.5f;
+	const float drag = 1.0f;
 
 	public Vector3 velocity;
 
 	Color initialColor;
-	Color currentColor;
+	Color currentColor; //used to change alpha, also determines damage amount later
 
 	// Use this for initialization
 	void Start () {
@@ -24,14 +25,19 @@ public class Projectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//Manual physics
-		velocity.y -= gravity * Time.deltaTime;
-		velocity -= (velocity * drag * Time.deltaTime);
+		float time = Time.deltaTime;
 
-		transform.Translate(velocity * Time.deltaTime);
+		//Manual physics
+		velocity.y -= gravity * time;
+		velocity -= (velocity * drag * time);
+
+		transform.Translate(velocity * time);
+
+		//Changing size
+		transform.localScale += (transform.localScale * scaleRate * time);
 
 		//Changing transparency
-		currentColor.a -= (currentColor.a * disperseRate * Time.deltaTime);
+		currentColor.a -= (currentColor.a * disperseRate * time);
 		renderer.material.SetColor("_TintColor", currentColor);
 		if (currentColor.a <= 0.01f) Destroy(gameObject);
 	}
