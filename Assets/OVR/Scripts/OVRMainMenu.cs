@@ -46,6 +46,8 @@ using System.Collections;
 /// </summary>
 public class OVRMainMenu : MonoBehaviour
 {
+	private GUIController GuiController;
+
 	private OVRPresetManager	PresetManager 	= new OVRPresetManager();
 	
 	public float 	FadeInTime    	= 2.0f;
@@ -84,6 +86,7 @@ public class OVRMainMenu : MonoBehaviour
 	private bool  PrevHatUp;
 	
 	private bool  ShowVRVars;
+	private bool  CustomVisible;
 	
 	private bool  OldSpaceHit;
 	
@@ -207,12 +210,15 @@ public class OVRMainMenu : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		GuiController = GameObject.Find("GUI Controller").GetComponent<GUIController>();
+
 		AlphaFadeValue = 1.0f;	
 		CurrentLevel   = 0;
 		PrevStartDown  = false;
 		PrevHatDown    = false;
 		PrevHatUp      = false;
 		ShowVRVars	   = false;
+		CustomVisible  = false;
 		OldSpaceHit    = false;
 		strFPS         = "FPS: 0";
 		LoadingLevel   = false;	
@@ -731,7 +737,8 @@ public class OVRMainMenu : MonoBehaviour
   			AlphaFadeValue -= Mathf.Clamp01(Time.deltaTime / FadeInTime);
 			if(AlphaFadeValue < 0.0f)
 			{
-				AlphaFadeValue = 0.0f;	
+				AlphaFadeValue = 0.0f;
+				CustomVisible = true;
 			}
 			else
 			{
@@ -744,7 +751,8 @@ public class OVRMainMenu : MonoBehaviour
 		// We can turn on the render object so we can render the on-screen menu
 		if(GUIRenderObject != null)
 		{
-			if (ScenesVisible || 
+			if (CustomVisible ||
+				ScenesVisible || 
 			    ShowVRVars || 
 			    Crosshair.IsCrosshairVisible() || 
 				RiftPresentTimeout > 0.0f || 
@@ -779,13 +787,17 @@ public class OVRMainMenu : MonoBehaviour
 		// Update OVRGUI functions (will be deprecated eventually when 2D renderingc
 		// is removed from GUI)
 		GuiHelper.SetFontReplace(FontReplace);
-		
+
 		// If true, we are displaying information about the Rift not being detected
 		// So do not show anything else
 		if(GUIShowRiftDetected() != true)
 		{	
 			GUIShowLevels();
 			GUIShowVRVariables();
+		}
+
+		if (CustomVisible) {
+			if(GuiController != null) GuiController.OculusGUI(ref GuiHelper);
 		}
 
 		// The cross-hair may need to go away at some point, unless someone finds it 
@@ -843,7 +855,7 @@ public class OVRMainMenu : MonoBehaviour
 	/// </summary>
 	void GUIShowVRVariables()
 	{
-		bool SpaceHit = Input.GetKey("space");
+		bool SpaceHit = Input.GetKey("p");
 		if ((OldSpaceHit == false) && (SpaceHit == true))
 		{
 			if(ShowVRVars == true) 
