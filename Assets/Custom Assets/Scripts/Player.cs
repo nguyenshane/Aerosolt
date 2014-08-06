@@ -9,13 +9,13 @@ public class Player : MonoBehaviour {
 
 	public Transform projectile;
 	public Transform nozzle;
-	protected Animator animator;
 	public float fireRate = 120.0f; //projectiles per second
 	public float projectileSpeed = 12.0f;
 	public float spread = 0.3f;
 
 	const float velocityDeviation = 0.2f;
 
+	protected Animator animator;
 	CharacterController character;
 	float fireDelay;
 	float fireDelayTimer;
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(!character) character = GetComponent<CharacterController>();
+		character = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();
 		
 		fireDelay = 1.0f / fireRate;
@@ -44,8 +44,11 @@ public class Player : MonoBehaviour {
 				newProjectile.rigidbody.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range(-velocityDeviation, velocityDeviation)));
 			}
 		}
-	
-		if (Input.GetAxis("Aim") > 0) animator.SetBool("Aim", true);
-		else animator.SetBool("Aim", false);
+
+		if (animator) {
+			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+			if (Input.GetAxis("Aim") > 0) animator.SetBool("Aim", true);
+			else animator.SetBool("Aim", false);
+		}
 	}
 }
