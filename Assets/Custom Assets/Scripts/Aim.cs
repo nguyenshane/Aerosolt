@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * Unused, aim animations are now controlled in Player.cs
+ */
+
 public class Aim : MonoBehaviour {
 
 	// Use this for initialization

@@ -2,13 +2,14 @@
 using System.Collections;
 
 /*
- * Basic projectile for prototype purposes only
+ * Basic projectile
+ * Deals damage and has manual physics
  */
 
 public class Projectile : MonoBehaviour {
 
 	const float baseDamage = 1.0f;
-	const float disperseRate = 4.0f;
+	const float disperseRate = 4.0f; //fade amount per second (higher fades faster)
 	const float scaleRate = 2.5f; //size increase over time
 	const float gravity = 4.0f;
 	const float drag = 1.0f;
@@ -17,7 +18,7 @@ public class Projectile : MonoBehaviour {
 
 	Color initialColor;
 	Color currentColor; //used to change alpha, also determines damage amount
-	float damage; //actual damage done is (damage * (max(scale / target scale, 1)), should be revised to keep each projectile's damage exactly the same over time
+	float damage; //actual damage done is (damage * (max(scale / target scale, 1)), should probably be revised to keep each projectile's total damage exactly the same over time
 	float scale;
 
 	// Use this for initialization
@@ -48,28 +49,7 @@ public class Projectile : MonoBehaviour {
 		damage = baseDamage * currentColor.a;
 		if (currentColor.a <= 0.01f) Destroy(gameObject);
 	}
-
-	/*
-	void OnCollisionEnter(Collision Collection) {
-		string tag = Collection.gameObject.tag;
-
-		switch (tag) {
-		case "Enemy":
-			Destroy(Collection.gameObject);
-			Destroy(gameObject);
-			break;
-
-		case "Environment":
-			Destroy(gameObject);
-			break;
-
-		default:
-			//Destroy(gameObject);
-			break;
-		}
-	}
-	*/
-
+	
 	void OnTriggerEnter(Collider Collection) {
 		string tag = Collection.gameObject.tag;
 		

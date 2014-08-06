@@ -121,6 +121,7 @@ public class GUIController : MonoBehaviour
 	}
 
 
+	//Called in OVRMainMenu.cs
 	public void OculusGUI(ref OVRGUI GuiHelper) {
 		if (!oculusEnabled) return;
 

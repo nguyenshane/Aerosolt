@@ -2,7 +2,8 @@
 using System.Collections;
 
 /*
- * Fires projectiles at the moment
+ * Fires projectiles
+ * Handles aiming animations
  */
 
 public class Player : MonoBehaviour {
