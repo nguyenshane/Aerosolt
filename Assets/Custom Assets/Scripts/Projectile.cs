@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour {
 	float damage; //actual damage done is (damage * (max(scale / target scale, 1)), should probably be revised to keep each projectile's total damage exactly the same over time
 	float scale;
 
+
 	// Use this for initialization
 	void Start () {
 		initialColor = renderer.material.GetColor("_TintColor");
@@ -50,12 +51,12 @@ public class Projectile : MonoBehaviour {
 		if (currentColor.a <= 0.01f) Destroy(gameObject);
 	}
 	
-	void OnTriggerEnter(Collider Collection) {
-		string tag = Collection.gameObject.tag;
+	void OnTriggerEnter(Collider collection) {
+		string tag = collection.gameObject.tag;
 		
 		switch (tag) {
 		case "Enemy":
-			Collection.gameObject.GetComponent<Enemy>().recieveDamage(damage, scale);
+			collection.gameObject.GetComponent<Enemy>().recieveDamage(damage, scale);
 			Destroy(gameObject);
 			break;
 			

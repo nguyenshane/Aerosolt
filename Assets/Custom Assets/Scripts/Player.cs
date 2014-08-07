@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 
 	public Transform projectile;
 	public Transform nozzle;
+	public float hitpoints = 100.0f;
 	public float fireRate = 120.0f; //projectiles per second
 	public float projectileSpeed = 12.0f;
 	public float spread = 0.3f;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour {
 	public CharacterController character;
 	float fireDelay;
 	float fireDelayTimer;
+	float hp;
 
 
 	// Use this for initialization
@@ -27,7 +29,8 @@ public class Player : MonoBehaviour {
 		if(!character)
 		character = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();
-		
+
+		hp = hitpoints;
 		fireDelay = 1.0f / fireRate;
 		fireDelayTimer = 0;
 	}
@@ -59,4 +62,17 @@ public class Player : MonoBehaviour {
 		}
 		*/
 	}
+
+	public void recieveDamage(float damage) {
+		hp -= damage;
+		/*
+		currentColor.r = initialColor.r * (hp / hitpoints);
+		currentColor.g = initialColor.g * (hp / hitpoints);
+		currentColor.b = initialColor.b * (hp / hitpoints);
+		renderer.material.SetColor("_Color", currentColor);
+		*/
+		//if (hp <= 0) Destroy(gameObject);
+	}
+
+	public float getHP() { return hp; }
 }
