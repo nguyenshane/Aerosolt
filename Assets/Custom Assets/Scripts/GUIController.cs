@@ -34,6 +34,8 @@ public class GUIController : MonoBehaviour
 	int minimapSize, indicatorSize, reticuleSize;
 	GameObject player;
 	Color minimapTint = Color.white;
+	bool showMinimap = true;
+	float minimapToggleDelay = 0.25f;
 
 
 	void Start() {
@@ -92,26 +94,30 @@ public class GUIController : MonoBehaviour
 	
 
 	void Update() {
-
+		if (minimapToggleDelay >= 0) minimapToggleDelay -= Time.deltaTime;
+		else if (Input.GetAxisRaw("Toggle Minimap") > 0) {
+			showMinimap = !showMinimap;
+			minimapToggleDelay = 0.25f;
+		}
 	}
 
 
 	void OnGUI() {
 		if (oculusEnabled) return;
 
-		GUI.color = minimapTint;
+		if (showMinimap) {
+			GUI.color = minimapTint;
+			//Draw minimap
+			GUI.DrawTexture(minimapLocation, minimap, ScaleMode.ScaleToFit);
+			GUI.color = Color.white;
 
-		//Draw minimap
-		GUI.DrawTexture(minimapLocation, minimap, ScaleMode.ScaleToFit);
-
-		GUI.color = Color.white;
-
-		//Draw player position indicator
-		Rect indicatorLocation = new Rect(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
-		Matrix4x4 backup = GUI.matrix;
-		GUIUtility.RotateAroundPivot(player.transform.eulerAngles.y, new Vector2(indicatorLocation.x + indicatorLocation.width / 2, indicatorLocation.y + indicatorLocation.height / 2));
-		GUI.DrawTexture(indicatorLocation, minimapIndicator, ScaleMode.ScaleToFit);
-		GUI.matrix = backup;
+			//Draw player position indicator
+			Rect indicatorLocation = new Rect(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
+			Matrix4x4 backup = GUI.matrix;
+			GUIUtility.RotateAroundPivot(player.transform.eulerAngles.y, new Vector2(indicatorLocation.x + indicatorLocation.width / 2, indicatorLocation.y + indicatorLocation.height / 2));
+			GUI.DrawTexture(indicatorLocation, minimapIndicator, ScaleMode.ScaleToFit);
+			GUI.matrix = backup;
+		}
 
 		//Draw reticule
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
@@ -125,23 +131,30 @@ public class GUIController : MonoBehaviour
 	public void OculusGUI(ref OVRGUI GuiHelper) {
 		if (!oculusEnabled) return;
 
-		GUI.color = minimapTint;
-
-		//Minimap
-		GuiHelper.StereoDrawTexture((int)(minimapLocation.x), (int)(minimapLocation.y), (int)minimapLocation.width, (int)minimapLocation.height, ref minimap, Color.white);
-
-		GUI.color = Color.white;
-
-		//Indicator
-		Rect indicatorLocation = new Rect(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
-		//Rect pivot = new Rect();
-		//GuiHelper.CalcPositionAndSize(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2), minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2), indicatorSize, indicatorSize, ref pivot);
-		//Matrix4x4 backup = GUI.matrix;
-		//GUIUtility.RotateAroundPivot(player.transform.eulerAngles.y, new Vector2(pivot.x, pivot.y));
-		GuiHelper.StereoDrawTexture((int)(indicatorLocation.x), (int)(indicatorLocation.y), (int)indicatorLocation.width, (int)indicatorLocation.height, ref minimapIndicator, Color.white);
-		//GUI.matrix = backup;
+		if (showMinimap) {
+			GUI.color = minimapTint;
+			//Minimap
+			GuiHelper.StereoDrawTexture((int)(minimapLocation.x), (int)(minimapLocation.y), (int)minimapLocation.width, (int)minimapLocation.height, ref minimap, Color.white);
+			GUI.color = Color.white;
+		
+			//Indicator
+			Rect indicatorLocation = new Rect(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2) - indicatorSize / 2, minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2) - indicatorSize / 2, indicatorSize, indicatorSize);
+			//Rect pivot = new Rect();
+			//GuiHelper.CalcPositionAndSize(minimapLocation.xMin + minimapLocation.width / 2 + (player.transform.position.x / gameworldSize * minimapSize / 2), minimapLocation.yMin + minimapLocation.height / 2 - (player.transform.position.z / gameworldSize * minimapSize / 2), indicatorSize, indicatorSize, ref pivot);
+			//Matrix4x4 backup = GUI.matrix;
+			//GUIUtility.RotateAroundPivot(player.transform.eulerAngles.y, new Vector2(pivot.x, pivot.y));
+			GuiHelper.StereoDrawTexture((int)(indicatorLocation.x), (int)(indicatorLocation.y), (int)indicatorLocation.width, (int)indicatorLocation.height, ref minimapIndicator, Color.white);
+			//GUI.matrix = backup;
+		}
 
 		//Reticule
 		GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
+
+		//Health
+		string hp = player.GetComponentInChildren<Player>().getHP().ToString();
+		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 3, 60, 20, ref hp, Color.red);
+
+		//Draw framerate
+		if (showFramerate) GUI.Label(new Rect(600, 240, 400, 400), (1 / Time.deltaTime).ToString());
 	}
 }
