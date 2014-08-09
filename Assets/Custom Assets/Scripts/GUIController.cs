@@ -17,7 +17,7 @@ public class GUIController : MonoBehaviour
 	public Texture minimap;
 	public float minimapScale = 1.0f;
 	public int minimapPadding = 32;
-	public float minimapAlpha = 0.75f;
+	public float minimapAlpha = 0.5f;
 	public Texture minimapIndicator;
 	public float indicatorScale = 1.0f;
 	public float gameworldSize = 100; //size in the ortho minimap camera used to get the minimap texture
@@ -88,17 +88,17 @@ public class GUIController : MonoBehaviour
 			//minimapLocation = new Rect(0 + minimapPadding, screenHeight - minimapPadding - minimapSize, minimapSize, minimapSize);
 			
 			//Top left
-			minimapLocation = new Rect(screenWidth * 0.25f + minimapPadding, screenHeight * 0.0f + minimapPadding, minimapSize, minimapSize);
+			//minimapLocation = new Rect(screenWidth * 0.25f + minimapPadding, screenHeight * 0.0f + minimapPadding, minimapSize, minimapSize);
+
+			//Centered
+			minimapLocation = new Rect(screenWidth * 0.5f - minimapSize / 2, screenHeight * 0.5f - minimapSize / 2, minimapSize, minimapSize);
 		}
 	}
 	
 
 	void Update() {
-		if (minimapToggleDelay >= 0) minimapToggleDelay -= Time.deltaTime;
-		else if (Input.GetAxisRaw("Toggle Minimap") > 0) {
-			showMinimap = !showMinimap;
-			minimapToggleDelay = 0.25f;
-		}
+		if (Input.GetAxisRaw("Show Minimap") > 0) showMinimap = true;
+		else showMinimap = false;
 	}
 
 

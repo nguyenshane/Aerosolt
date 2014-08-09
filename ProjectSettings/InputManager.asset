@@ -277,13 +277,13 @@ InputManager:
     axis: 2
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Toggle Minimap
+    m_Name: Show Minimap
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: tab
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: joystick button 16
     gravity: 0
     dead: 0
     sensitivity: .100000001
