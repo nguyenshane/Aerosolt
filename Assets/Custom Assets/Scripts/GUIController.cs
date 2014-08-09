@@ -298,7 +298,7 @@ public class GUIController : MonoBehaviour
 		//Overlay menu
 		if (showingMenu) {
 			GUI.Box(new Rect(0, 0, screenWidth, screenHeight), "", background);
-			
+
 			switch (menuSelection) {
 			case 0:
 				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 - 40), 100, 20, ref menuOptions[0], Color.red);
@@ -323,11 +323,13 @@ public class GUIController : MonoBehaviour
 
 
 	public void activateMenu() {
+		player.GetComponent<MouseLook>().enabled = false;
 		Time.timeScale = 0;
 		showingMenu = true;
 	}
 	
 	public void deactivateMenu() {
+		player.GetComponent<MouseLook>().enabled = true;
 		Time.timeScale = 1;
 		showingMenu = false;
 	}
