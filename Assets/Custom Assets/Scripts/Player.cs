@@ -7,21 +7,21 @@ using System.Collections;
  */
 
 public class Player : MonoBehaviour {
-
-	public Transform projectile;
-	public Transform nozzle;
+	
 	public float hitpoints = 100.0f;
-	public float fireRate = 120.0f; //projectiles per second
+	public float ammunition = 100.0f;
+	public float fireRate = 960.0f; //projectiles per second
 	public float projectileSpeed = 12.0f;
 	public float spread = 0.3f;
+	public Transform projectile;
+	public Transform nozzle;
 
 	const float velocityDeviation = 0.2f;
 
 	protected Animator animator;
 	public CharacterController character;
-	float fireDelay;
-	float fireDelayTimer;
-	float hp;
+	float fireDelay, fireDelayTimer;
+	float hp, ammo;
 
 
 	// Use this for initialization
@@ -31,6 +31,7 @@ public class Player : MonoBehaviour {
 		animator = GetComponent<Animator>();
 
 		hp = hitpoints;
+		ammo = ammunition;
 		fireDelay = 1.0f / fireRate;
 		fireDelayTimer = 0;
 	}
@@ -52,26 +53,14 @@ public class Player : MonoBehaviour {
 
 		if (Input.GetAxis ("Aim") > 0) animator.SetBool ("Aim", true);
 		else animator.SetBool("Aim", false);
-
-
-		/*
-		if (animator) {
-			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-			if (Input.GetAxis("Aim") > 0) animator.SetBool("Aim", true);
-			else animator.SetBool("Aim", false);
-		}
-		*/
 	}
 
 	public void recieveDamage(float damage) {
 		hp -= damage;
-		/*
-		currentColor.r = initialColor.r * (hp / hitpoints);
-		currentColor.g = initialColor.g * (hp / hitpoints);
-		currentColor.b = initialColor.b * (hp / hitpoints);
-		renderer.material.SetColor("_Color", currentColor);
-		*/
-		//if (hp <= 0) Destroy(gameObject);
+
+		if (hp <= 0) {
+			GameObject.Find("GUI Controller").GetComponent<GUIController>().activateDeathScreen();
+		}
 	}
 
 	public float getHP() { return hp; }

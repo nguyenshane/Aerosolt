@@ -33,9 +33,11 @@ public class GUIController : MonoBehaviour
 	const int indicatorBaseSize = 16;
 	const int reticuleBaseSize = 16;
 
-	readonly string[] menuOptions = {"Continue", "Main Menu", "Exit"};
+	readonly string[] menuOptions = {"Continue", "Restart", "Main Menu", "Exit"};
+	readonly string[] deathOptions = {"Restart", "Main Menu", "Exit"};
+	string deathString = "Death!";
 	const int menuItemSpacing = 80;
-	const float inputRepeatDelay = 0.25f;
+	const float inputRepeatDelay = 0.5f;
 
 	int screenWidth, screenHeight;
 	float screenRatio;
@@ -54,7 +56,9 @@ public class GUIController : MonoBehaviour
 	int prevActivationInputState = 0;
 	float activationInputRepeatTimer;
 	int spacing;
+	Rect menuItem;
 	bool showingMenu = false;
+	bool showingDeathScreen = false;
 	
 	GameObject player;
 
@@ -103,6 +107,8 @@ public class GUIController : MonoBehaviour
 			inactiveMenuItem.fontSize = (int)(inactiveMenuItem.fontSize * screenRatio);
 			spacing = (int)(menuItemSpacing * screenRatio);
 
+			menuItem = new Rect(screenWidth / 2 - 100 * screenRatio, screenHeight / 2 - 20 * screenRatio, 200 * screenRatio, 40 * screenRatio);
+
 			//Standard camera minimap locations
 			
 			//Top right
@@ -124,6 +130,9 @@ public class GUIController : MonoBehaviour
 			indicatorSize = (int)(indicatorBaseSize * indicatorScale * 0.5f);
 			reticuleSize = (int)(reticuleBaseSize * reticuleScale * 0.5f);
 			minimapPadding += 64;
+			spacing = 60;
+
+			menuItem = new Rect((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 - 10), 100, 20);
 
 			//Oculus minimap locations
 
@@ -154,46 +163,9 @@ public class GUIController : MonoBehaviour
 		if (activationInputRepeatTimer >= 0) activationInputRepeatTimer -= Time.unscaledDeltaTime;
 
 		if (showingMenu) {
-			//Selection axes
-			if (Input.GetAxisRaw("Menu Navigation") > 0) {
-				//Up selection
-				if (prevMenuInputState != 1 || inputRepeatTimer <= 0) {
-					inputRepeatTimer = inputRepeatDelay;
-					menuSelection--;
-					if (menuSelection < 0) menuSelection = menuOptions.Length-1;
-				}
-
-				prevMenuInputState = 1;
-			} else if (Input.GetAxisRaw("Menu Navigation") < 0) {
-				//Down selection
-				if (prevMenuInputState != -1 || inputRepeatTimer <= 0) {
-					inputRepeatTimer = inputRepeatDelay;
-					menuSelection++;
-					if (menuSelection >= menuOptions.Length) menuSelection = 0;
-				}
-
-				prevMenuInputState = -1;
-			} else prevMenuInputState = 0; //No axis movement
-
-			//Selection button
-			if (Input.GetAxisRaw("Menu Selection") > 0) {
-				if (prevSelectionInputState != 1 || selectionInputRepeatTimer <= 0) {
-					selectionInputRepeatTimer = inputRepeatDelay;
-					handleMenuSelection();
-				}
-
-				prevSelectionInputState = 1;
-			} else prevSelectionInputState = 0;
-
-			//Back button
-			if (Input.GetAxisRaw("Menu Return") > 0) {
-				if (prevActivationInputState != 1 || activationInputRepeatTimer <= 0) {
-					activationInputRepeatTimer = inputRepeatDelay;
-					deactivateMenu();
-				}
-
-				prevActivationInputState = 1;
-			} else prevActivationInputState = 0;
+			handleMenuInput(menuOptions.Length);
+		} else if (showingDeathScreen) {
+			handleMenuInput(deathOptions.Length);
 		} else { //In-game controls
 			//Menu button
 			if (Input.GetAxisRaw("Menu Activation") > 0) {
@@ -217,7 +189,7 @@ public class GUIController : MonoBehaviour
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
 
 		//Draw health
-		GUI.Label(new Rect((int)screenWidth / 3, (int)screenHeight / 3, 60 * screenRatio, 20 * screenRatio), player.GetComponentInChildren<Player>().getHP().ToString(), health);
+		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4, 60 * screenRatio, 20 * screenRatio), player.GetComponentInChildren<Player>().getHP().ToString(), health);
 		
 		//Draw framerate
 		if (showFramerate) GUI.Label(new Rect(32 * screenRatio, 32 * screenRatio, 400 * screenRatio, 400 * screenRatio), (1 / Time.deltaTime).ToString());
@@ -242,21 +214,55 @@ public class GUIController : MonoBehaviour
 
 			switch (menuSelection) {
 			case 0:
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2 - spacing, 200 * screenRatio, 40 * screenRatio), menuOptions[0], activeMenuItem);
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2, 200 * screenRatio, 40 * screenRatio), menuOptions[1], inactiveMenuItem);
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2 + spacing, 200 * screenRatio, 40 * screenRatio), menuOptions[2], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[0], activeMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[1], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[2], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[3], inactiveMenuItem);
 				break;
 
 			case 1:
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2 - spacing, 200 * screenRatio, 40 * screenRatio), menuOptions[0], inactiveMenuItem);
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2, 200 * screenRatio, 40 * screenRatio), menuOptions[1], activeMenuItem);
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2 + spacing, 200 * screenRatio, 40 * screenRatio), menuOptions[2], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[0], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[1], activeMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[2], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[3], inactiveMenuItem);
 				break;
 
 			case 2:
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2 - spacing, 200 * screenRatio, 40 * screenRatio), menuOptions[0], inactiveMenuItem);
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2, 200 * screenRatio, 40 * screenRatio), menuOptions[1], inactiveMenuItem);
-				GUI.Label(new Rect(screenWidth / 2, screenHeight / 2 + spacing, 200 * screenRatio, 40 * screenRatio), menuOptions[2], activeMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[0], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[1], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[2], activeMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[3], inactiveMenuItem);
+				break;
+
+			case 3:
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[0], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[1], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 0.5f, menuItem.width, menuItem.height), menuOptions[2], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.5f, menuItem.width, menuItem.height), menuOptions[3], activeMenuItem);
+				break;
+			}
+		} else if (showingDeathScreen) {
+			GUI.Box(new Rect(0, 0, screenWidth, screenHeight), "", background);
+			
+			GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 2.0f, menuItem.width, menuItem.height), deathString, health);
+
+			switch (menuSelection) {
+			case 0:
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.0f, menuItem.width, menuItem.height), deathOptions[0], activeMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.0f, menuItem.width, menuItem.height), deathOptions[1], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 2.0f, menuItem.width, menuItem.height), deathOptions[2], inactiveMenuItem);
+				break;
+				
+			case 1:
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.0f, menuItem.width, menuItem.height), deathOptions[0], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.0f, menuItem.width, menuItem.height), deathOptions[1], activeMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 2.0f, menuItem.width, menuItem.height), deathOptions[2], inactiveMenuItem);
+				break;
+				
+			case 2:
+				GUI.Label(new Rect(menuItem.x, menuItem.y - spacing * 0.0f, menuItem.width, menuItem.height), deathOptions[0], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 1.0f, menuItem.width, menuItem.height), deathOptions[1], inactiveMenuItem);
+				GUI.Label(new Rect(menuItem.x, menuItem.y + spacing * 2.0f, menuItem.width, menuItem.height), deathOptions[2], activeMenuItem);
 				break;
 			}
 		}
@@ -274,7 +280,7 @@ public class GUIController : MonoBehaviour
 		
 		//Health
 		string hp = player.GetComponentInChildren<Player>().getHP().ToString();
-		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 3, 60, 20, ref hp, Color.red);
+		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4, 60, 20, ref hp, Color.red);
 		
 		//Framerate
 		if (showFramerate) GUI.Label(new Rect(600, 240, 400, 400), (1 / Time.deltaTime).ToString());
@@ -297,62 +303,173 @@ public class GUIController : MonoBehaviour
 
 		//Overlay menu
 		if (showingMenu) {
-			GUI.Box(new Rect(0, 0, screenWidth, screenHeight), "", background);
+			GUI.Box(new Rect(0, 0, (int)screenWidth, (int)screenHeight), "", background);
 
 			switch (menuSelection) {
 			case 0:
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 - 40), 100, 20, ref menuOptions[0], Color.red);
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2), 100, 20, ref menuOptions[1], Color.white);
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 + 40), 100, 20, ref menuOptions[2], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[0], Color.red);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[1], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[2], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[3], Color.white);
 				break;
 				
 			case 1:
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 - 40), 100, 20, ref menuOptions[0], Color.white);
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2), 100, 20, ref menuOptions[1], Color.red);
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 + 40), 100, 20, ref menuOptions[2], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[0], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[1], Color.red);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[2], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[3], Color.white);
 				break;
 				
 			case 2:
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 - 40), 100, 20, ref menuOptions[0], Color.white);
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2), 100, 20, ref menuOptions[1], Color.white);
-				GuiHelper.StereoBox((int)(screenWidth / 2 - 50), (int)(screenHeight / 2 + 40), 100, 20, ref menuOptions[2], Color.red);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[0], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[1], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[2], Color.red);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[3], Color.white);
+				break;
+
+			case 3:
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[0], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[1], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 20), (int)menuItem.width, (int)menuItem.height, ref menuOptions[2], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 60), (int)menuItem.width, (int)menuItem.height, ref menuOptions[3], Color.red);
+				break;
+			}
+		} else if (showingDeathScreen) {
+			GUI.Box(new Rect((int)0, (int)0, (int)screenWidth, (int)screenHeight), "", background);
+
+			GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 80), (int)menuItem.width, (int)menuItem.height, ref deathString, Color.red);
+
+			switch (menuSelection) {
+			case 0:
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 0), (int)menuItem.width, (int)menuItem.height, ref deathOptions[0], Color.red);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 40), (int)menuItem.width, (int)menuItem.height, ref deathOptions[1], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 80), (int)menuItem.width, (int)menuItem.height, ref deathOptions[2], Color.white);
+				break;
+				
+			case 1:
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 0), (int)menuItem.width, (int)menuItem.height, ref deathOptions[0], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 40), (int)menuItem.width, (int)menuItem.height, ref deathOptions[1], Color.red);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 80), (int)menuItem.width, (int)menuItem.height, ref deathOptions[2], Color.white);
+				break;
+				
+			case 2:
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 0), (int)menuItem.width, (int)menuItem.height, ref deathOptions[0], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 40), (int)menuItem.width, (int)menuItem.height, ref deathOptions[1], Color.white);
+				GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y + 80), (int)menuItem.width, (int)menuItem.height, ref deathOptions[2], Color.red);
 				break;
 			}
 		}
 	}
 
 
+	//Activates the main overlay menu
 	public void activateMenu() {
 		player.GetComponent<MouseLook>().enabled = false;
 		Time.timeScale = 0;
 		showingMenu = true;
 	}
-	
+
+	//Deactivates all menus
 	public void deactivateMenu() {
+		menuSelection = 0;
 		player.GetComponent<MouseLook>().enabled = true;
 		Time.timeScale = 1;
 		showingMenu = false;
+		showingDeathScreen = false;
 	}
 
+	//Loads the main menu
 	public void returnToMenu() {
 		deactivateMenu();
 		Application.LoadLevel(0);
 	}
 
+	public void activateDeathScreen() {
+		player.GetComponent<MouseLook>().enabled = false;
+		Time.timeScale = 0;
+		showingMenu = false; //should really use an enum for menu state instead but w/e
+		showingDeathScreen = true;
+	}
+
+
+	private void handleMenuInput(int menuOptionsLength) {
+		//Selection axes
+		if (Input.GetAxisRaw("Menu Navigation") > 0) {
+			//Up selection
+			if (prevMenuInputState != 1 || inputRepeatTimer <= 0) {
+				inputRepeatTimer = inputRepeatDelay;
+				menuSelection--;
+				if (menuSelection < 0) menuSelection = menuOptionsLength-1;
+			}
+			
+			prevMenuInputState = 1;
+		} else if (Input.GetAxisRaw("Menu Navigation") < 0) {
+			//Down selection
+			if (prevMenuInputState != -1 || inputRepeatTimer <= 0) {
+				inputRepeatTimer = inputRepeatDelay;
+				menuSelection++;
+				if (menuSelection >= menuOptionsLength) menuSelection = 0;
+			}
+			
+			prevMenuInputState = -1;
+		} else prevMenuInputState = 0; //No axis movement
+		
+		//Selection button
+		if (Input.GetAxisRaw("Menu Selection") > 0) {
+			if (prevSelectionInputState != 1 || selectionInputRepeatTimer <= 0) {
+				selectionInputRepeatTimer = inputRepeatDelay;
+				handleMenuSelection();
+			}
+			
+			prevSelectionInputState = 1;
+		} else prevSelectionInputState = 0;
+		
+		//Back button
+		if (Input.GetAxisRaw("Menu Return") > 0) {
+			if (prevActivationInputState != 1 || activationInputRepeatTimer <= 0) {
+				activationInputRepeatTimer = inputRepeatDelay;
+				deactivateMenu();
+			}
+			
+			prevActivationInputState = 1;
+		} else prevActivationInputState = 0;
+	}
 
 	private void handleMenuSelection() {
-		switch (menuSelection) {
-		case 0: //Continue
+		if (showingMenu) {
+			switch (menuSelection) {
+			case 0: //Continue
+				deactivateMenu();
+				break;
+
+			case 1: //Restart
+				deactivateMenu();
+				Application.LoadLevel(Application.loadedLevel);
+				break;
+				
+			case 2: //Main menu
+				returnToMenu();
+				break;
+				
+			case 3: //Exit
+				Application.Quit();
+				break;
+			}
+		} else {
+			switch (menuSelection) {
+			case 0: //Restart
 			deactivateMenu();
+			Application.LoadLevel(Application.loadedLevel);
 			break;
 			
-		case 1: //Main menu
+			case 1: //Main menu
 			returnToMenu();
 			break;
 			
-		case 2: //Exit
+			case 2: //Exit
 			Application.Quit();
 			break;
+			}
 		}
 	}
 }
