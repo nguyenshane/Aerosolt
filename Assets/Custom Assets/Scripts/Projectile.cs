@@ -59,13 +59,35 @@ public class Projectile : MonoBehaviour {
 			collection.gameObject.GetComponent<Enemy>().recieveDamage(damage, scale);
 			Destroy(gameObject);
 			break;
-			
+
+		case "Obstacle":
+			collection.gameObject.GetComponent<Obstacle>().recieveDamage(damage, scale);
+			Destroy(gameObject);
+			break;
+
 		case "Environment":
 			Destroy(gameObject);
 			break;
 			
 		default:
-			//Destroy(gameObject);
+			break;
+		}
+	}
+
+	void OnTriggerStay(Collider collection) {
+		float time = Time.deltaTime;
+		string tag = collection.gameObject.tag;
+		
+		switch (tag) {
+		case "Cloud": //Deals damage to the cloud and the projectile over time
+			collection.gameObject.GetComponent<Cloud>().recieveDamage(damage * time, scale);
+			currentColor.a -= (damage * time);
+			renderer.material.SetColor("_TintColor", currentColor);
+			damage = baseDamage * currentColor.a;
+			if (currentColor.a <= 0.01f) Destroy(gameObject);
+			break;
+
+		default:
 			break;
 		}
 	}
