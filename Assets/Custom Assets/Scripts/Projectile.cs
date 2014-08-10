@@ -70,7 +70,12 @@ public class Projectile : MonoBehaviour {
 			break;
 
 		case "BGM+":
-			Debug.Log("BGM+");
+			GameObject.Find("OptionController").GetComponent<OptionController>().BGM("plus");
+			Destroy(gameObject);
+			break;
+
+		case "BGM-":
+			GameObject.Find("OptionController").GetComponent<OptionController>().BGM("minus");
 			Destroy(gameObject);
 			break;
 			
