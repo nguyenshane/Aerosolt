@@ -67,4 +67,8 @@ public class Player : MonoBehaviour {
 			GameObject.Find("GUI Controller").GetComponent<GUIController>().activateDeathScreen();
 		}
 	}
+
+	public void addAmmo(float amount) {
+		ammo += amount;
+	}
 }
