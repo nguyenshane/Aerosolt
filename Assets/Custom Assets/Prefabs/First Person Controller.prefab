@@ -33,7 +33,7 @@ GameObject:
   - 54: {fileID: 5400000}
   m_Layer: 0
   m_Name: Graphics
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,6 +50,8 @@ GameObject:
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
+  - 82: {fileID: 8200000}
+  - 114: {fileID: 11400034}
   m_Layer: 0
   m_Name: First Person Controller
   m_TagString: Player
@@ -86,7 +88,7 @@ GameObject:
   - 114: {fileID: 11400012}
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400008}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: OVRCameraController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +127,7 @@ GameObject:
   - 114: {fileID: 11400022}
   m_Layer: 0
   m_Name: windex
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +249,7 @@ GameObject:
   - 23: {fileID: 2300012}
   - 114: {fileID: 11400030}
   - 114: {fileID: 11400028}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -781,6 +783,64 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100014}
   m_Enabled: 1
+--- !u!82 &8200000
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: 45b5d96bbe9c34d74abe948391533819, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: .5
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!92 &9200000
 Behaviour:
   m_ObjectHideFlags: 1
@@ -830,7 +890,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294966783
   m_Lightmapping: 1
   m_ShadowSamples: 1
   m_ShadowRadius: 0
@@ -1071,12 +1131,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2916db845f6f3254b8d42dd3c34adc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 400000, guid: 62f285d3a184e2049bc42e4dd69c09b3, type: 2}
-  nozzle: {fileID: 400022}
   hitpoints: 100
+  ammunition: 100
   fireRate: 960
   projectileSpeed: 12
   spread: .300000012
+  ammoConsumption: .00999999978
+  projectile: {fileID: 400000, guid: 62f285d3a184e2049bc42e4dd69c09b3, type: 2}
+  nozzle: {fileID: 400022}
   character: {fileID: 14300000}
 --- !u!114 &11400022
 MonoBehaviour:
@@ -1160,6 +1222,17 @@ MonoBehaviour:
   m_RefractLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &11400034
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d430b73d01c087542bae0eb13e7b45c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

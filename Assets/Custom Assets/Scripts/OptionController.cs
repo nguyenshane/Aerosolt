@@ -2,20 +2,26 @@
 using System.Collections;
 
 public class OptionController : MonoBehaviour {
+
 	// global variables for game settings
 	public static float bgmvolume = 0.5f;
 	public static float sfxvolume = 0.5f;
 	public static float brightness = 1.0f;
 	public static float sensitivity = 1.0f;
-	float brightnesslight;
+
+	float initialIntensity;
+	Light brightnesslight;
+
+
 	// Use this for initialization
 	void Start () {
-		brightnesslight = GameObject.Find("Brightness Light").light.intensity;
+		brightnesslight = GameObject.Find("Brightness Light").light;
+		initialIntensity = brightnesslight.intensity;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject.Find("Brightness Light").light.intensity = brightness * brightnesslight;
+		brightnesslight.intensity = brightness * initialIntensity;
 
 		// Audio volumes
 		audio.volume = bgmvolume;
@@ -34,7 +40,7 @@ public class OptionController : MonoBehaviour {
 			bgmvolume += 0.1f; 
 			GameObject.Find("BGM Slider").transform.Translate(Vector3.left * 0.5f);
 		}
-			//iTween.MoveTo(GameObject.Find("BGM Slider"), iTween.Hash("x",mid-5+bgmvolume*10,"time",0));}
+		//iTween.MoveTo(GameObject.Find("BGM Slider"), iTween.Hash("x",mid-5+bgmvolume*10,"time",0));}
 		audio.Play();
 		Debug.Log(bgmvolume);
 	}
