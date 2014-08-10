@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * Contains stats of the obstacle object
+ * Handles stat changes (damage taken, etc)
+ */
+
 public class Obstacle : MonoBehaviour {
 
 	public float hitpoints = 250.0f;
