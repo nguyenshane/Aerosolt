@@ -16,7 +16,7 @@ public class GUIController : MonoBehaviour
 	public bool showFramerate = false;
 	public bool dynamicMinimap = false;
 
-	public GUIStyle background, health, activeMenuItem, inactiveMenuItem;
+	public GUIStyle background, health, ammo, activeMenuItem, inactiveMenuItem;
 
 	public Texture minimap;
 	public float minimapScale = 1.0f;
@@ -61,6 +61,7 @@ public class GUIController : MonoBehaviour
 	bool showingDeathScreen = false;
 	
 	GameObject player;
+	Player playerScript;
 
 
 	void Start() {
@@ -69,6 +70,7 @@ public class GUIController : MonoBehaviour
 		inputRepeatTimer = selectionInputRepeatTimer = activationInputRepeatTimer = inputRepeatDelay;
 
 		player = GameObject.Find("First Person Controller");
+		playerScript = player.GetComponentInChildren<Player>();
 
 		Transform minimapCamera = transform.Find("Minimap Camera");
 		Camera mmCameraComp = minimapCamera.gameObject.GetComponent<Camera>();
@@ -103,6 +105,7 @@ public class GUIController : MonoBehaviour
 			minimapPadding = (int)(minimapPadding * screenRatio);
 
 			health.fontSize = (int)(health.fontSize * screenRatio);
+			ammo.fontSize = (int)(ammo.fontSize * screenRatio);
 			activeMenuItem.fontSize = (int)(activeMenuItem.fontSize * screenRatio);
 			inactiveMenuItem.fontSize = (int)(inactiveMenuItem.fontSize * screenRatio);
 			spacing = (int)(menuItemSpacing * screenRatio);
@@ -189,10 +192,13 @@ public class GUIController : MonoBehaviour
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
 
 		//Draw health
-		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4, 60 * screenRatio, 20 * screenRatio), player.GetComponentInChildren<Player>().getHP().ToString(), health);
+		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4, 60 * screenRatio, 20 * screenRatio), playerScript.getHP().ToString("F0"), health);
+
+		//Draw ammo
+		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4 + spacing, 60 * screenRatio, 20 * screenRatio), playerScript.getAmmo().ToString("F0"), ammo);
 		
 		//Draw framerate
-		if (showFramerate) GUI.Label(new Rect(32 * screenRatio, 32 * screenRatio, 400 * screenRatio, 400 * screenRatio), (1 / Time.deltaTime).ToString());
+		if (showFramerate) GUI.Label(new Rect(32 * screenRatio, 32 * screenRatio, 400 * screenRatio, 400 * screenRatio), (1 / Time.deltaTime).ToString("F4"));
 
 		if (showMinimap) {
 			GUI.color = minimapTint;
@@ -279,11 +285,15 @@ public class GUIController : MonoBehaviour
 		GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
 		
 		//Health
-		string hp = player.GetComponentInChildren<Player>().getHP().ToString();
+		string hp = playerScript.getHP().ToString("F0");
 		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4, 60, 20, ref hp, Color.red);
+
+		//Ammo
+		string ammo = playerScript.getAmmo().ToString("F0");
+		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4 + 40, 60, 20, ref ammo, Color.blue);
 		
 		//Framerate
-		if (showFramerate) GUI.Label(new Rect(600, 240, 400, 400), (1 / Time.deltaTime).ToString());
+		if (showFramerate) GUI.Label(new Rect(600, 240, 400, 400), (1 / Time.deltaTime).ToString("F4"));
 
 		if (showMinimap) {
 			GUI.color = minimapTint;

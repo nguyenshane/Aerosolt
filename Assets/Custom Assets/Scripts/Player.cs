@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 	public float fireRate = 960.0f; //projectiles per second
 	public float projectileSpeed = 12.0f;
 	public float spread = 0.3f;
+	public float ammoConsumption = 0.01f;
 	public Transform projectile;
 	public Transform nozzle;
 
@@ -22,7 +23,9 @@ public class Player : MonoBehaviour {
 	public CharacterController character;
 	float fireDelay, fireDelayTimer;
 	float hp, ammo;
-
+	
+	public float getHP() { return hp; }
+	public float getAmmo() { return ammo; }
 
 	// Use this for initialization
 	void Start () {
@@ -40,7 +43,7 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if (fireDelayTimer >= 0) fireDelayTimer -= Time.deltaTime;
 		else if (Input.GetAxis ("Fire1") > 0) {
-			while (fireDelayTimer < fireDelay) {
+			while (fireDelayTimer < fireDelay && ammo >= ammoConsumption) {
 				fireDelayTimer += fireDelay; //allows the correct number of projectiles to be fired per second regardless of framerate
 				
 				Vector3 direction = transform.forward + (Random.onUnitSphere * spread);
@@ -48,6 +51,8 @@ public class Player : MonoBehaviour {
 				
 				Projectile newProjectile = ((Transform)Instantiate (projectile, nozzle.position + (transform.forward * 0.2f), Quaternion.identity)).gameObject.GetComponent<Projectile> ();
 				newProjectile.velocity = character.velocity + (direction * projectileSpeed * (1 + Random.Range (-velocityDeviation, velocityDeviation)));
+
+				ammo -= ammoConsumption;
 			}
 		} 
 
@@ -62,6 +67,4 @@ public class Player : MonoBehaviour {
 			GameObject.Find("GUI Controller").GetComponent<GUIController>().activateDeathScreen();
 		}
 	}
-
-	public float getHP() { return hp; }
 }
