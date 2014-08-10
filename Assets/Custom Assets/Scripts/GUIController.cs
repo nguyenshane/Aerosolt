@@ -5,7 +5,7 @@ using System.Collections;
  * Handles all GUI drawing:
  * Minimap
  * Reticule
- * Health and ammo indicators (TBA)
+ * Health and ammo indicators
  * Objectives (TBA)
  * Framerate (if enabled)
  */
