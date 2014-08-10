@@ -68,6 +68,11 @@ public class Projectile : MonoBehaviour {
 		case "Environment":
 			Destroy(gameObject);
 			break;
+
+		case "BGM+":
+			Debug.Log("BGM+");
+			Destroy(gameObject);
+			break;
 			
 		default:
 			break;

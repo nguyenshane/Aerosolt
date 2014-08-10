@@ -7,6 +7,14 @@ TagManager:
   - Enemy
   - Cloud
   - Obstacle
+  - BGM+
+  - BGM-
+  - SFX+
+  - SFX-
+  - Sen+
+  - Sen-
+  - Bright+
+  - Bright-
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
