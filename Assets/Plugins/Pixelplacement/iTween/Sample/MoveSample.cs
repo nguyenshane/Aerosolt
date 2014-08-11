@@ -4,7 +4,15 @@ using System.Collections;
 public class MoveSample : MonoBehaviour
 {	
 	void Start(){
-		iTween.MoveBy(gameObject, iTween.Hash("x", 2, "easeType", "easeInOutExpo", "loopType", "pingPong", "delay", .1));
+	}
+
+	// Update is called once per frame
+	void Update () {
+		if (Input.GetKeyDown("b")) {
+			iTween.MoveTo(gameObject, iTween.Hash("y", -2));
+		}
+		
+		
 	}
 }
 
