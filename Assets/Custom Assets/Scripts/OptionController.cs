@@ -21,7 +21,7 @@ public class OptionController : MonoBehaviour {
 	
 	public void BGM(string x){
 	var mid = GameObject.Find("BGM Line").transform.position.x;
-		if(x == "minus" && bgmvolume >= 0.1f) {
+		if(x == "minus" && bgmvolume >= 0.0f) {
 			bgmvolume -= 0.1f;
 			GameObject.Find("BGM Slider").transform.Translate(Vector3.right * 0.5f);
 		}
@@ -52,14 +52,14 @@ public class OptionController : MonoBehaviour {
 	}
 
 	public void Bright(string x){
-		var mid = GameObject.Find("Bright Line").transform.position.x/2;
-		if(x == "minus" && brightness >= 0.1f) {
-			brightness -= 0.1f;
-			GameObject.Find("Bright Slider").transform.Translate(Vector3.right * 0.5f);
+		var mid = GameObject.Find("Bright Line").transform.position.x;
+		if(x == "minus" && brightness >= 0.01f) {
+			brightness -= 0.01f;
+			GameObject.Find("Bright Slider").transform.Translate(Vector3.right * 0.2f);
 		}
-		if(x == "plus" && brightness <= 0.9f) {
-			brightness += 0.1f;
-			GameObject.Find("Bright Slider").transform.Translate(Vector3.left * 0.5f);
+		if(x == "plus" && brightness <= 0.19f) {
+			brightness += 0.01f;
+			GameObject.Find("Bright Slider").transform.Translate(Vector3.left * 0.2f);
 		}
 		audio.Play();
 		GameObject.Find("Brightness Light").light.intensity = brightness  * 1;
