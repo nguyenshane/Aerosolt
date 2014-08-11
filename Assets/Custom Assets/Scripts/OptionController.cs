@@ -9,18 +9,18 @@ public class OptionController : MonoBehaviour {
 	public static float brightness = 0.1f;
 	public static float sensitivity = 10.0f;
 	
-	float brightnesslight;
+	//float brightnesslight;
 
 	
 	// Use this for initialization
 	void Start () {
 		// Get the initial intensity, then update this number
-		brightnesslight = GameObject.Find("Brightness Light").light.intensity;
+		//brightnesslight = GameObject.Find("Brightness Light").light.intensity;
 	}
 
 	
 	public void BGM(string x){
-	var mid = GameObject.Find("BGM Line").transform.position.x;
+		//var mid = GameObject.Find("BGM Line").transform.position.x;
 		if(x == "minus" && bgmvolume >= 0.1f) {
 			bgmvolume -= 0.1f;
 			GameObject.Find("BGM Slider").transform.Translate(Vector3.right * 0.5f);
@@ -37,7 +37,7 @@ public class OptionController : MonoBehaviour {
 	}
 
 	public void SFX(string x){
-		var mid = GameObject.Find("SFX Line").transform.position.x;
+		//var mid = GameObject.Find("SFX Line").transform.position.x;
 		if(x == "minus" && sfxvolume >= 0.1f) {
 			sfxvolume -= 0.1f;
 			GameObject.Find("SFX Slider").transform.Translate(Vector3.right * 0.5f);
@@ -52,7 +52,7 @@ public class OptionController : MonoBehaviour {
 	}
 
 	public void Bright(string x){
-		var mid = GameObject.Find("Bright Line").transform.position.x/2;
+		//var mid = GameObject.Find("Bright Line").transform.position.x/2;
 		if(x == "minus" && brightness >= 0.1f) {
 			brightness -= 0.1f;
 			GameObject.Find("Bright Slider").transform.Translate(Vector3.right * 0.5f);
@@ -67,7 +67,7 @@ public class OptionController : MonoBehaviour {
 	}
 
 	public void Sen(string x){
-		var mid = GameObject.Find("Sen Line").transform.position.x/2;
+		//var mid = GameObject.Find("Sen Line").transform.position.x/2;
 		if(x == "minus" && sensitivity >= 7f) {
 			sensitivity -= 0.1f * 7;
 			GameObject.Find("Sen Slider").transform.Translate(Vector3.right * 0.5f);

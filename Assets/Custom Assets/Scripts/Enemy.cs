@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour {
 		
 		switch (tag) {
 		case "Player":
-			collection.gameObject.GetComponentInChildren<Player>().recieveDamage(damage * Time.deltaTime);
+			Player.recieveDamage(damage * Time.deltaTime);
 			break;
 
 		default:

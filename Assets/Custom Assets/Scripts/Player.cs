@@ -8,8 +8,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 	
-	public float hitpoints = 100.0f;
-	public float ammunition = 100.0f;
+	public static float hitpoints = 100.0f;
+	public static float ammunition = 100.0f;
 	public float fireRate = 960.0f; //projectiles per second
 	public float projectileSpeed = 12.0f;
 	public float spread = 0.3f;
@@ -22,21 +22,27 @@ public class Player : MonoBehaviour {
 	protected Animator animator;
 	public CharacterController character;
 	float fireDelay, fireDelayTimer;
-	float hp, ammo;
+	static float hp, ammo;
+	static bool initialized = false;
 	
-	public float getHP() { return hp; }
-	public float getAmmo() { return ammo; }
+	public static float getHP() { return hp; }
+	public static float getAmmo() { return ammo; }
 
 	// Use this for initialization
 	void Start () {
 		if(!character)
 		character = GetComponent<CharacterController>();
-		animator = GetComponent<Animator>();
+		animator = GetComponentInChildren<Animator>();
 
-		hp = hitpoints;
-		ammo = ammunition;
+		if (!initialized) {
+			hp = hitpoints;
+			ammo = ammunition;
+			initialized = true;
+		}
+
 		fireDelay = 1.0f / fireRate;
 		fireDelayTimer = 0;
+
 	}
 	
 	// Update is called once per frame
@@ -60,7 +66,8 @@ public class Player : MonoBehaviour {
 		else animator.SetBool("Aim", false);
 	}
 
-	public void recieveDamage(float damage) {
+
+	public static void recieveDamage(float damage) {
 		hp -= damage;
 
 		if (hp <= 0) {
@@ -68,7 +75,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void addAmmo(float amount) {
+	public static void addAmmo(float amount) {
 		ammo += amount;
 	}
 }

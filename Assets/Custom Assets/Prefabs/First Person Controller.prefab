@@ -52,6 +52,7 @@ GameObject:
   - 114: {fileID: 11400002}
   - 82: {fileID: 8200000}
   - 114: {fileID: 11400034}
+  - 114: {fileID: 11400020}
   m_Layer: 0
   m_Name: First Person Controller
   m_TagString: Player
@@ -123,7 +124,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400012}
   - 95: {fileID: 9500000}
-  - 114: {fileID: 11400020}
   - 114: {fileID: 11400022}
   m_Layer: 0
   m_Name: windex
@@ -1125,7 +1125,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100012}
+  m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2916db845f6f3254b8d42dd3c34adc07, type: 3}
