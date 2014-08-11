@@ -6,7 +6,7 @@ public class OptionController : MonoBehaviour {
 	// global variables for game settings
 	public static float bgmvolume = 0.5f;
 	public static float sfxvolume = 0.5f;
-	public static float brightness = 0.5f;
+	public static float brightness = 0.1f;
 	public static float sensitivity = 10.0f;
 	
 	float brightnesslight;

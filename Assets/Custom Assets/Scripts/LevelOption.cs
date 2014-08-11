@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// This file should be attach to the object that carries the BGM
+
+using UnityEngine;
 using System.Collections;
 
 public class LevelOption : MonoBehaviour {
