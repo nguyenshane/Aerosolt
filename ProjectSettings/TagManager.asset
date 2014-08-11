@@ -3,8 +3,18 @@
 --- !u!78 &1
 TagManager:
   tags:
-  - Enemy
   - Environment
+  - Enemy
+  - Cloud
+  - Obstacle
+  - BGM+
+  - BGM-
+  - SFX+
+  - SFX-
+  - Sen+
+  - Sen-
+  - Bright+
+  - Bright-
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -15,7 +25,7 @@ TagManager:
   Builtin Layer 6: 
   Builtin Layer 7: 
   User Layer 8: Projectiles
-  User Layer 9: 
+  User Layer 9: Minimap
   User Layer 10: 
   User Layer 11: 
   User Layer 12: 
