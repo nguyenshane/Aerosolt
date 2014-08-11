@@ -49,6 +49,7 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if (fireDelayTimer >= 0) fireDelayTimer -= Time.deltaTime;
 		else if (Input.GetAxis ("Fire1") > 0) {
+			audio.Play ();
 			while (fireDelayTimer < fireDelay && ammo >= ammoConsumption) {
 				fireDelayTimer += fireDelay; //allows the correct number of projectiles to be fired per second regardless of framerate
 				
