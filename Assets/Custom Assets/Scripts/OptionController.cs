@@ -31,8 +31,8 @@ public class OptionController : MonoBehaviour {
 		}
 
 		//iTween.MoveTo(GameObject.Find("BGM Slider"), iTween.Hash("x",mid-5+bgmvolume*10,"time",0));}
+		GameObject.Find("First Person Controller").audio.volume = bgmvolume;
 		audio.Play();
-		audio.volume = bgmvolume;
 		Debug.Log(bgmvolume);
 	}
 
