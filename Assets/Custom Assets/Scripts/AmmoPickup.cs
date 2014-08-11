@@ -12,18 +12,17 @@ public class AmmoPickup : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("First Person Controller");
-		playerScript = player.GetComponentInChildren<Player>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Vector3.Distance(player.transform.position, transform.position) <= pickupDistance) {
-			float ammoDifference = playerScript.ammunition - playerScript.getAmmo();
+			float ammoDifference = Player.ammunition - Player.getAmmo();
 			if (ammoDifference >= amount) {
-				playerScript.addAmmo(amount);
+				Player.addAmmo(amount);
 				Destroy(gameObject);
 			} else {
-				playerScript.addAmmo(ammoDifference);
+				Player.addAmmo(ammoDifference);
 				amount -= ammoDifference;
 			}
 		}
@@ -34,13 +33,12 @@ public class AmmoPickup : MonoBehaviour {
 		
 		switch (tag) {
 		case "Player":
-			Player player = collection.gameObject.GetComponentInChildren<Player>();
-			float ammoDifference = player.ammunition - player.getAmmo();
+			float ammoDifference = Player.ammunition - Player.getAmmo();
 			if (ammoDifference >= amount) {
-				player.addAmmo(amount);
+				Player.addAmmo(amount);
 				Destroy(gameObject);
 			} else {
-				player.addAmmo(ammoDifference);
+				Player.addAmmo(ammoDifference);
 				amount -= ammoDifference;
 			}
 			break;
