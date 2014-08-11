@@ -78,6 +78,36 @@ public class Projectile : MonoBehaviour {
 			GameObject.Find("OptionController").GetComponent<OptionController>().BGM("minus");
 			Destroy(gameObject);
 			break;
+
+		case "SFX+":
+			GameObject.Find("OptionController").GetComponent<OptionController>().SFX("plus");
+			Destroy(gameObject);
+			break;
+			
+		case "SFX-":
+			GameObject.Find("OptionController").GetComponent<OptionController>().SFX("minus");
+			Destroy(gameObject);
+			break;
+		
+		case "Bright+":
+			GameObject.Find("OptionController").GetComponent<OptionController>().Bright("plus");
+			Destroy(gameObject);
+			break;
+			
+		case "Bright-":
+			GameObject.Find("OptionController").GetComponent<OptionController>().Bright("minus");
+			Destroy(gameObject);
+			break;
+
+		case "Sen+":
+			GameObject.Find("OptionController").GetComponent<OptionController>().Sen("plus");
+			Destroy(gameObject);
+			break;
+			
+		case "Sen-":
+			GameObject.Find("OptionController").GetComponent<OptionController>().Sen("minus");
+			Destroy(gameObject);
+			break;
 			
 		default:
 			break;
