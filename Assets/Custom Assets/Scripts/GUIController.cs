@@ -48,6 +48,8 @@ public class GUIController : MonoBehaviour
 	bool showMinimap = true;
 	float gameworldSize; //size in the ortho minimap camera used to get the minimap texture
 
+	Texture bg;
+
 	int menuSelection = 0;
 	int prevMenuInputState = 0;
 	float inputRepeatTimer;
@@ -61,7 +63,6 @@ public class GUIController : MonoBehaviour
 	bool showingDeathScreen = false;
 	
 	GameObject player;
-	Player playerScript;
 
 
 	void Start() {
@@ -70,7 +71,8 @@ public class GUIController : MonoBehaviour
 		inputRepeatTimer = selectionInputRepeatTimer = activationInputRepeatTimer = inputRepeatDelay;
 
 		player = GameObject.Find("First Person Controller");
-		playerScript = player.GetComponentInChildren<Player>();
+
+		bg = background.normal.background;
 
 		Transform minimapCamera = transform.Find("Minimap Camera");
 		Camera mmCameraComp = minimapCamera.gameObject.GetComponent<Camera>();
@@ -192,10 +194,10 @@ public class GUIController : MonoBehaviour
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
 
 		//Draw health
-		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4, 60 * screenRatio, 20 * screenRatio), playerScript.getHP().ToString("F0"), health);
+		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4, 60 * screenRatio, 20 * screenRatio), Player.getHP().ToString("F0"), health);
 
 		//Draw ammo
-		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4 + spacing, 60 * screenRatio, 20 * screenRatio), playerScript.getAmmo().ToString("F0"), ammo);
+		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4 + spacing, 60 * screenRatio, 20 * screenRatio), Player.getAmmo().ToString("F0"), ammo);
 		
 		//Draw framerate
 		if (showFramerate) GUI.Label(new Rect(32 * screenRatio, 32 * screenRatio, 400 * screenRatio, 400 * screenRatio), (1 / Time.deltaTime).ToString("F4"));
@@ -285,11 +287,11 @@ public class GUIController : MonoBehaviour
 		GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
 		
 		//Health
-		string hp = playerScript.getHP().ToString("F0");
+		string hp = Player.getHP().ToString("F0");
 		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4, 60, 20, ref hp, Color.red);
 
 		//Ammo
-		string ammo = playerScript.getAmmo().ToString("F0");
+		string ammo = Player.getAmmo().ToString("F0");
 		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4 + 40, 60, 20, ref ammo, Color.blue);
 		
 		//Framerate
@@ -313,7 +315,7 @@ public class GUIController : MonoBehaviour
 
 		//Overlay menu
 		if (showingMenu) {
-			GUI.Box(new Rect(0, 0, (int)screenWidth, (int)screenHeight), "", background);
+			GuiHelper.StereoDrawTexture(0, 0, (int)screenWidth, (int)screenHeight, ref bg, Color.white);
 
 			switch (menuSelection) {
 			case 0:
@@ -345,7 +347,8 @@ public class GUIController : MonoBehaviour
 				break;
 			}
 		} else if (showingDeathScreen) {
-			GUI.Box(new Rect((int)0, (int)0, (int)screenWidth, (int)screenHeight), "", background);
+			//GUI.Box(new Rect((int)0, (int)0, (int)screenWidth, (int)screenHeight), "", background);
+			GuiHelper.StereoDrawTexture(0, 0, (int)screenWidth, (int)screenHeight, ref bg, Color.white);
 
 			GuiHelper.StereoBox((int)menuItem.x, (int)(menuItem.y - 80), (int)menuItem.width, (int)menuItem.height, ref deathString, Color.red);
 
