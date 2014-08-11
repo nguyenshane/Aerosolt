@@ -6,15 +6,16 @@ public class LevelOption : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
 		// Audio volumes
 		audio.volume = OptionController.bgmvolume;
 		AudioListener.volume = OptionController.sfxvolume;
-	
+		
+		// Brightness
+		GameObject.Find("Brightness Light").light.intensity = OptionController.brightness * 1;
+
+		// Sensitivity
+		GameObject.Find("First Person Controller").GetComponent<MouseLook>().sensitivityX = OptionController.sensitivity;
+
 	}
+
 }

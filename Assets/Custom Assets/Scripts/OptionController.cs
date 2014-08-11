@@ -2,24 +2,23 @@
 using System.Collections;
 
 public class OptionController : MonoBehaviour {
+
 	// global variables for game settings
 	public static float bgmvolume = 0.5f;
 	public static float sfxvolume = 0.5f;
 	public static float brightness = 0.5f;
 	public static float sensitivity = 10.0f;
+	
 	float brightnesslight;
+
+	
 	// Use this for initialization
 	void Start () {
+		// Get the initial intensity, then update this number
 		brightnesslight = GameObject.Find("Brightness Light").light.intensity;
 	}
+
 	
-	// Update is called once per frame
-	void Update () {
-
-
-	}
-
-
 	public void BGM(string x){
 	var mid = GameObject.Find("BGM Line").transform.position.x;
 		if(x == "minus" && bgmvolume >= 0.1f) {
@@ -31,6 +30,7 @@ public class OptionController : MonoBehaviour {
 			GameObject.Find("BGM Slider").transform.Translate(Vector3.left * 0.5f);
 		}
 
+		//iTween.MoveTo(GameObject.Find("BGM Slider"), iTween.Hash("x",mid-5+bgmvolume*10,"time",0));}
 		audio.Play();
 		audio.volume = bgmvolume;
 		Debug.Log(bgmvolume);
@@ -62,7 +62,7 @@ public class OptionController : MonoBehaviour {
 			GameObject.Find("Bright Slider").transform.Translate(Vector3.left * 0.5f);
 		}
 		audio.Play();
-		GameObject.Find("Brightness Light").light.intensity = brightness * brightnesslight * 100;
+		GameObject.Find("Brightness Light").light.intensity = brightness  * 1;
 		Debug.Log(brightness);
 	}
 
