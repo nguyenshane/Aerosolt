@@ -7,7 +7,6 @@ public class AmmoPickup : MonoBehaviour {
 	public float pickupDistance = 4.0f;
 
 	GameObject player;
-	Player playerScript;
 
 	// Use this for initialization
 	void Start () {
