@@ -457,10 +457,12 @@ public class GUIController : MonoBehaviour
 
 			case 1: //Restart
 				deactivateMenu();
+				Player.resetStats();
 				Application.LoadLevel(Application.loadedLevel);
 				break;
 				
 			case 2: //Main menu
+				Player.resetStats();
 				returnToMenu();
 				break;
 				
@@ -472,10 +474,12 @@ public class GUIController : MonoBehaviour
 			switch (menuSelection) {
 			case 0: //Restart
 			deactivateMenu();
+			Player.resetStats();
 			Application.LoadLevel(Application.loadedLevel);
 			break;
 			
 			case 1: //Main menu
+			Player.resetStats();
 			returnToMenu();
 			break;
 			

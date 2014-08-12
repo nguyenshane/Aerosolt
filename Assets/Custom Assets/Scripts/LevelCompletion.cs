@@ -21,7 +21,7 @@ public class LevelCompletion : MonoBehaviour {
 	void OnTriggerEnter(Collider collection) {
 		if (collection.gameObject.tag == "Player" &&
 		    GameObject.FindGameObjectWithTag("Enemy") == null &&
-		    collection.gameObject.GetComponentInChildren<Player>().hasKey[Application.loadedLevel]) {
+		    collection.gameObject.GetComponentInChildren<Player>().hasKey) {
 			Application.LoadLevel(Application.loadedLevel+1);
 		}
 	}

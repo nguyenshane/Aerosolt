@@ -15,7 +15,7 @@ public class Key : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Vector3.Distance(player.transform.position, transform.position) <= pickupDistance) {
-			player.GetComponentInChildren<Player>().hasKey[Application.loadedLevel] = true;
+			player.GetComponentInChildren<Player>().hasKey = true;
 			Destroy(gameObject);
 		}
 	}

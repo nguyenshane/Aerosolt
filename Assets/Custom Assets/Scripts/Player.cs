@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 	public Transform projectile;
 	public Transform nozzle;
 
-	public bool[] hasKey;
+	public bool hasKey;
 
 	const float velocityDeviation = 0.2f;
 	const float deadzone = 0.1f;
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
 		fireDelayTimer = 0.0f;
 		firing = triggerReset = false;
 
-		hasKey = new bool[Application.levelCount+1];
+		hasKey = false;
 	}
 	
 	// Update is called once per frame
@@ -100,7 +100,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void resetStats() {
+	public static void resetStats() {
 		hp = hitpoints;
 		ammo = ammunition;
 	}
