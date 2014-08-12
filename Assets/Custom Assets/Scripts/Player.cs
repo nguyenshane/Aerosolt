@@ -96,7 +96,13 @@ public class Player : MonoBehaviour {
 
 		if (hp <= 0) {
 			GameObject.Find("GUI Controller").GetComponent<GUIController>().activateDeathScreen();
+			resetStats();
 		}
+	}
+
+	public void resetStats() {
+		hp = hitpoints;
+		ammo = ammunition;
 	}
 
 	public static void addAmmo(float amount) {
