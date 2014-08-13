@@ -9,6 +9,7 @@ public class RoamingAI : MonoBehaviour {
 
 	public float targetAcquisitionTime = 0.5f;
 	public float reactionTime = 0.2f;
+	public float turnSpeed = 1.0f;
 
 	static float waypointHeight = 3.0f;
 
@@ -115,7 +116,9 @@ public class RoamingAI : MonoBehaviour {
 			} else Debug.Log("Waypoint not found");
 			*/
 		}
-		
+
+		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation(targetDir.normalized) * Quaternion.Euler(270, 0, 0), Time.deltaTime * turnSpeed);
+
 		if (rigidbody.velocity.magnitude > stats.speed) rigidbody.velocity = (rigidbody.velocity.normalized * stats.speed);
 
 		insideWaypoint = false;

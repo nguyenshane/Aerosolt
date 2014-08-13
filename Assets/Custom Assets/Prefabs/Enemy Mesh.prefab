@@ -188,6 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetAcquisitionTime: .5
   reactionTime: .200000003
+  turnSpeed: 1
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -201,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetAcquisitionTime: .5
   reactionTime: .200000003
+  turnSpeed: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
