@@ -9,6 +9,7 @@ public class AI : MonoBehaviour {
 
 	public float targetAcquisitionTime = 0.5f;
 	public float reactionTime = 0.2f;
+	public float turnSpeed = 0.5f;
 
 	float targetAcquisitionTimer;
 	float reactionTimer;
@@ -34,6 +35,8 @@ public class AI : MonoBehaviour {
 
 		sightMask = (1 << 10) | (1 << 11);
 		sightMask = ~sightMask;
+
+		targetDir = transform.forward;
 	}
 	
 	// Update is called once per frame
@@ -84,6 +87,8 @@ public class AI : MonoBehaviour {
 			//Return to original location
 			rigidbody.AddForce((returnPosition - transform.position).normalized * stats.acceleration * Time.deltaTime, ForceMode.Impulse);
 		}
+
+		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation(targetDir.normalized) * Quaternion.Euler(270, 0, 0), Time.deltaTime * turnSpeed);
 
 		if (rigidbody.velocity.magnitude > stats.speed) rigidbody.velocity = (rigidbody.velocity.normalized * stats.speed);
 	}
