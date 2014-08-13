@@ -35,6 +35,8 @@ public class AI : MonoBehaviour {
 
 		sightMask = (1 << 10) | (1 << 11);
 		sightMask = ~sightMask;
+
+		targetDir = transform.forward;
 	}
 	
 	// Update is called once per frame
