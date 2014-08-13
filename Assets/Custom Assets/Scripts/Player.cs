@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
 	public CharacterController character;
 
 	float fireDelay, fireDelayTimer, burstDelay, burstDelayTimer;
-	bool firing, triggerReset;
+	bool firing, triggerReset, aiming;
 
 	Transform cameraTransform;
 	int layerMask;
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour {
 		burstDelayTimer = 0.0f;
 		fireDelay = 1.0f / fireRate;
 		fireDelayTimer = 0.0f;
-		firing = triggerReset = false;
+		firing = triggerReset = aiming = false;
 
 		hasKey = false;
 
@@ -67,9 +67,15 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hitinfo, Mathf.Infinity, layerMask);
-		Quaternion targetRotation = Quaternion.LookRotation(hitinfo.point - nozzle.position);
-		transform.rotation = targetRotation;
+		aiming = Input.GetAxis ("Aim") > 0;
+		animator.SetBool("Aim", aiming);
+
+		if (!aiming) {
+			Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hitinfo, Mathf.Infinity, layerMask);
+			Quaternion targetRotation = Quaternion.LookRotation(hitinfo.point - nozzle.position);
+			transform.rotation = targetRotation;
+		} else transform.rotation = Quaternion.LookRotation(cameraTransform.forward);
+
 
 		if (burstDelayTimer >= 0) burstDelayTimer -= Time.deltaTime;
 		else firing = false;
@@ -100,9 +106,6 @@ public class Player : MonoBehaviour {
 				ammo -= ammoConsumption;
 			}
 		}
-
-		if (Input.GetAxis ("Aim") > 0) animator.SetBool ("Aim", true);
-		else animator.SetBool("Aim", false);
 	}
 
 
