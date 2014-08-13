@@ -62,7 +62,7 @@ public class GUIController : MonoBehaviour
 	bool showingMenu = false;
 	bool showingDeathScreen = false;
 	
-	GameObject player;
+	GameObject player, reticuleObj;
 
 
 	void Start() {
@@ -71,6 +71,7 @@ public class GUIController : MonoBehaviour
 		inputRepeatTimer = selectionInputRepeatTimer = activationInputRepeatTimer = inputRepeatDelay;
 
 		player = GameObject.Find("First Person Controller");
+		reticuleObj = GameObject.Find("Reticule");
 
 		bg = background.normal.background;
 
@@ -283,16 +284,16 @@ public class GUIController : MonoBehaviour
 
 		//In-game UI
 
-		//Reticule
-		GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
-		
+		//Reticule (replaced by 3d object)
+		//GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
+
 		//Health
 		string hp = Player.getHP().ToString("F0");
-		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4, 60, 20, ref hp, Color.red);
+		GuiHelper.StereoBox((int)screenWidth / 2 - 30, (int)screenHeight / 4 - 10, 60, 20, ref hp, Color.red);
 
 		//Ammo
 		string ammo = Player.getAmmo().ToString("F0");
-		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4 + 40, 60, 20, ref ammo, Color.blue);
+		GuiHelper.StereoBox((int)screenWidth / 2 - 30, (int)screenHeight / 4 * 3 - 10 - 40, 60, 20, ref ammo, Color.blue);
 		
 		//Framerate
 		if (showFramerate) GUI.Label(new Rect(600, 240, 400, 400), (1 / Time.deltaTime).ToString("F4"));
@@ -377,13 +378,23 @@ public class GUIController : MonoBehaviour
 
 	//Activates the main overlay menu
 	public void activateMenu() {
+		reticuleObj.SetActive(false);
 		player.GetComponent<MouseLook>().enabled = false;
 		Time.timeScale = 0;
 		showingMenu = true;
 	}
 
+	public void activateDeathScreen() {
+		reticuleObj.SetActive(false);
+		player.GetComponent<MouseLook>().enabled = false;
+		Time.timeScale = 0;
+		showingMenu = false; //should really use an enum for menu state instead but w/e
+		showingDeathScreen = true;
+	}
+
 	//Deactivates all menus
 	public void deactivateMenu() {
+		reticuleObj.SetActive(true);
 		menuSelection = 0;
 		player.GetComponent<MouseLook>().enabled = true;
 		Time.timeScale = 1;
@@ -395,13 +406,6 @@ public class GUIController : MonoBehaviour
 	public void returnToMenu() {
 		deactivateMenu();
 		Application.LoadLevel(0);
-	}
-
-	public void activateDeathScreen() {
-		player.GetComponent<MouseLook>().enabled = false;
-		Time.timeScale = 0;
-		showingMenu = false; //should really use an enum for menu state instead but w/e
-		showingDeathScreen = true;
 	}
 
 
@@ -457,10 +461,12 @@ public class GUIController : MonoBehaviour
 
 			case 1: //Restart
 				deactivateMenu();
+				Player.resetStats();
 				Application.LoadLevel(Application.loadedLevel);
 				break;
 				
 			case 2: //Main menu
+				Player.resetStats();
 				returnToMenu();
 				break;
 				
@@ -472,10 +478,12 @@ public class GUIController : MonoBehaviour
 			switch (menuSelection) {
 			case 0: //Restart
 			deactivateMenu();
+			Player.resetStats();
 			Application.LoadLevel(Application.loadedLevel);
 			break;
 			
 			case 1: //Main menu
+			Player.resetStats();
 			returnToMenu();
 			break;
 			

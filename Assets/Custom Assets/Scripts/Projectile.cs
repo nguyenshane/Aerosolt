@@ -56,7 +56,7 @@ public class Projectile : MonoBehaviour {
 		
 		switch (tag) {
 		case "Enemy":
-			collection.gameObject.GetComponent<Enemy>().recieveDamage(damage, scale);
+			collection.gameObject.GetComponentInChildren<Enemy>().recieveDamage(damage, scale);
 			Destroy(gameObject);
 			break;
 

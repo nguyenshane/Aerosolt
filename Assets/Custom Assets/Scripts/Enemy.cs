@@ -10,14 +10,15 @@ public class Enemy : MonoBehaviour {
 
 	public float damage = 25.0f; //Damage per second during contact
 	public float hitpoints = 100.0f;
-	public Vector2 speedRange = new Vector2(4.0f, 6.0f);
-	public Vector2 accelerationRange = new Vector2(2.0f, 5.0f);
+	public Vector2 speedRange = new Vector2(3.0f, 5.0f);
+	public Vector2 accelerationRange = new Vector2(3.0f, 6.0f);
 
 	[HideInInspector]
 	public float speed;
 	[HideInInspector]
 	public float acceleration;
 
+	GameObject parent;
 	Color initialColor;
 	Color currentColor;
 	float hp;
@@ -25,7 +26,8 @@ public class Enemy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		initialColor = renderer.material.GetColor("_Color");
+		parent = transform.parent.gameObject;
+		initialColor = parent.renderer.material.GetColor("_Color");
 		currentColor = initialColor;
 		hp = hitpoints;
 
@@ -38,7 +40,7 @@ public class Enemy : MonoBehaviour {
 	
 	}
 
-	void OnCollisionStay(Collision collection) {
+	void OnTriggerStay(Collider collection) {
 		string tag = collection.gameObject.tag;
 		
 		switch (tag) {
@@ -56,7 +58,7 @@ public class Enemy : MonoBehaviour {
 		currentColor.r = initialColor.r * (hp / hitpoints);
 		currentColor.g = initialColor.g * (hp / hitpoints);
 		currentColor.b = initialColor.b * (hp / hitpoints);
-		renderer.material.SetColor("_Color", currentColor);
-		if (hp <= 0) Destroy(gameObject);
+		parent.renderer.material.SetColor("_Color", currentColor);
+		if (hp <= 0) Destroy(parent);
 	}
 }
