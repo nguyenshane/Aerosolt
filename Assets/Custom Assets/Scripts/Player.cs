@@ -25,8 +25,14 @@ public class Player : MonoBehaviour {
 
 	protected Animator animator;
 	public CharacterController character;
+
 	float fireDelay, fireDelayTimer, burstDelay, burstDelayTimer;
 	bool firing, triggerReset;
+
+	Transform cameraTransform;
+	int layerMask;
+	RaycastHit hitinfo;
+
 	static float hp, ammo;
 	static bool initialized = false;
 	
@@ -52,10 +58,19 @@ public class Player : MonoBehaviour {
 		firing = triggerReset = false;
 
 		hasKey = false;
+
+		layerMask = 1 << 8;
+		layerMask = ~layerMask;
+
+		cameraTransform = GameObject.Find("OVRCameraController").transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hitinfo, Mathf.Infinity, layerMask);
+		Quaternion targetRotation = Quaternion.LookRotation(hitinfo.point - nozzle.position);
+		transform.rotation = targetRotation;
+
 		if (burstDelayTimer >= 0) burstDelayTimer -= Time.deltaTime;
 		else firing = false;
 

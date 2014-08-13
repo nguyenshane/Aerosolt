@@ -283,9 +283,9 @@ public class GUIController : MonoBehaviour
 
 		//In-game UI
 
-		//Reticule
-		GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
-		
+		//Reticule (replaced by 3d object)
+		//GuiHelper.StereoDrawTexture((int)(screenWidth / 2 - reticuleSize / 2), (int)(screenHeight / 2 - reticuleSize / 2), (int)reticuleSize, (int)reticuleSize, ref reticule, Color.white);
+
 		//Health
 		string hp = Player.getHP().ToString("F0");
 		GuiHelper.StereoBox((int)screenWidth / 3, (int)screenHeight / 4, 60, 20, ref hp, Color.red);
