@@ -24,7 +24,7 @@ public class AI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		target = GameObject.Find("First Person Controller").transform;
-		stats = GetComponent<Enemy>();
+		stats = GetComponentInChildren<Enemy>();
 		hitinfo = new RaycastHit();
 
 		targetAcquisitionTimer = targetAcquisitionTime;
