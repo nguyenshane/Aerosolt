@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
 
 		hasKey = false;
 
-		layerMask = 1 << 8;
+		layerMask = (1 << 8) | (1 << 11);
 		layerMask = ~layerMask;
 
 		cameraTransform = GameObject.Find("OVRCameraController").transform;

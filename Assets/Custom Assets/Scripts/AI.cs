@@ -17,6 +17,7 @@ public class AI : MonoBehaviour {
 	Vector3 returnPosition;
 	Vector3 targetDir;
 	RaycastHit hitinfo;
+	int sightMask;
 
 	Transform target;
 	Enemy stats;
@@ -30,6 +31,9 @@ public class AI : MonoBehaviour {
 		targetAcquisitionTimer = targetAcquisitionTime;
 		reactionTimer = reactionTime;
 		returnPosition = transform.position;
+
+		sightMask = (1 << 10) | (1 << 11);
+		sightMask = ~sightMask;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +42,7 @@ public class AI : MonoBehaviour {
 		else {
 			targetAcquisitionTimer = Random.Range(targetAcquisitionTime / 2, targetAcquisitionTime * 1.5f);
 			targetDir = target.position - transform.position + (Random.insideUnitSphere * target.collider.bounds.size.x * 0.7f);
-			Physics.Raycast(transform.position, targetDir, out hitinfo);
+			Physics.Raycast(transform.position, targetDir, out hitinfo, Mathf.Infinity, sightMask);
 
 			if (hitinfo.collider != null) {
 				if (hitinfo.collider.tag == "Player") {
@@ -48,7 +52,7 @@ public class AI : MonoBehaviour {
 				} else {
 					//Mirror the previous raycast across the vector pointing to the center of the player and try again
 					targetDir = target.position - transform.position - new Vector3(targetDir.x - transform.position.x - target.position.x, 0, targetDir.z - transform.position.z - target.position.z);
-					Physics.Raycast(transform.position, targetDir, out hitinfo);
+					Physics.Raycast(transform.position, targetDir, out hitinfo, Mathf.Infinity, sightMask);
 
 					if (hitinfo.collider.tag == "Player") {
 						//Follow target

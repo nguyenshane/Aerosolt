@@ -10,8 +10,8 @@ public class Enemy : MonoBehaviour {
 
 	public float damage = 25.0f; //Damage per second during contact
 	public float hitpoints = 100.0f;
-	public Vector2 speedRange = new Vector2(4.0f, 6.0f);
-	public Vector2 accelerationRange = new Vector2(2.0f, 5.0f);
+	public Vector2 speedRange = new Vector2(3.0f, 5.0f);
+	public Vector2 accelerationRange = new Vector2(3.0f, 6.0f);
 
 	[HideInInspector]
 	public float speed;
