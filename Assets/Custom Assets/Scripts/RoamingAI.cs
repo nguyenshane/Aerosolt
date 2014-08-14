@@ -42,7 +42,7 @@ public class RoamingAI : MonoBehaviour {
 		sightMask = (1 << 10) | (1 << 11);
 		sightMask = ~sightMask;
 
-		//findNextWaypoint();
+		findNextWaypoint();
 	}
 	
 	// Update is called once per frame
@@ -74,8 +74,7 @@ public class RoamingAI : MonoBehaviour {
 							//About to run into something that isn't the player, recalculate roaming path
 							hasTarget = false;
 							returning = true;
-							recalculateDirection();
-							//findNextWaypoint();
+							findNextWaypoint();
 						}
 					}
 				}
@@ -93,15 +92,6 @@ public class RoamingAI : MonoBehaviour {
 			rigidbody.AddForce(targetDir.normalized * stats.acceleration * Time.deltaTime, ForceMode.Impulse);
 		} else {
 			//Continue roaming
-			Physics.Raycast(transform.position, rigidbody.velocity, out hitinfo, Mathf.Infinity, sightMask);
-			Debug.DrawRay(transform.position, rigidbody.velocity.normalized * (transform.localScale.x + Random.Range(0.2f, 0.7f) + Mathf.Pow(rigidbody.velocity.magnitude, 2) / (2 * stats.acceleration)), Color.white, 0.5f);
-			if (hitinfo.distance <= transform.localScale.x + Random.Range(0.2f, 0.7f) + Mathf.Pow(rigidbody.velocity.magnitude, 2) / (2 * stats.acceleration)) {
-				recalculateDirection();
-			}
-
-			rigidbody.AddForce(targetDir.normalized * stats.acceleration * Time.deltaTime, ForceMode.Impulse);
-
-			/*
 			if (nextWaypoint != null) {
 				Vector3 wpDirection = (nextWaypoint.transform.position - transform.position + (Random.insideUnitSphere * 2.0f));
 				Debug.DrawRay(transform.position, wpDirection, Color.green);
@@ -111,10 +101,19 @@ public class RoamingAI : MonoBehaviour {
 					wpDirection = (nextWaypoint.transform.position - transform.position + (Random.insideUnitSphere * 2));
 				}
 				wpDirection.Normalize();
+				targetDir = wpDirection;
 
 				rigidbody.AddForce(wpDirection * stats.acceleration * Time.deltaTime, ForceMode.Impulse);
-			} else Debug.Log("Waypoint not found");
-			*/
+			} else {
+				//Random roam
+				Physics.Raycast(transform.position, rigidbody.velocity, out hitinfo, Mathf.Infinity, sightMask);
+				Debug.DrawRay(transform.position, rigidbody.velocity.normalized * (transform.localScale.x + Random.Range(0.2f, 0.7f) + Mathf.Pow(rigidbody.velocity.magnitude, 2) / (2 * stats.acceleration)), Color.white, 0.5f);
+				if (hitinfo.distance <= transform.localScale.x + Random.Range(0.2f, 0.7f) + Mathf.Pow(rigidbody.velocity.magnitude, 2) / (2 * stats.acceleration)) {
+					recalculateDirection();
+				}
+
+				rigidbody.AddForce(targetDir.normalized * stats.acceleration * Time.deltaTime, ForceMode.Impulse);
+			}
 		}
 
 		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation(targetDir.normalized) * Quaternion.Euler(270, 0, 0), Time.deltaTime * turnSpeed);
@@ -162,6 +161,8 @@ public class RoamingAI : MonoBehaviour {
 				break;
 			}
 		}
+
+		if (nextWaypoint == null) recalculateDirection();
 	}
 
 	private void getNearestWaypoints() {
