@@ -29,7 +29,7 @@ public class Player : MonoBehaviour {
 	float fireDelay, fireDelayTimer, burstDelay, burstDelayTimer;
 	bool firing, triggerReset, aiming;
 
-	Transform cameraTransform;
+	Transform cameraTransform, reticuleTransform;
 	int layerMask;
 	RaycastHit hitinfo;
 
@@ -63,6 +63,7 @@ public class Player : MonoBehaviour {
 		layerMask = ~layerMask;
 
 		cameraTransform = GameObject.Find("OVRCameraController").transform;
+		reticuleTransform = GameObject.Find("Reticule").transform;
 	}
 	
 	// Update is called once per frame
@@ -71,7 +72,7 @@ public class Player : MonoBehaviour {
 		animator.SetBool("Aim", aiming);
 
 		if (!aiming) {
-			Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hitinfo, Mathf.Infinity, layerMask);
+			Physics.Raycast(cameraTransform.position, reticuleTransform.position - cameraTransform.position, out hitinfo, Mathf.Infinity, layerMask);
 			Quaternion targetRotation = Quaternion.LookRotation(hitinfo.point - nozzle.position);
 			transform.rotation = targetRotation;
 		} else transform.rotation = Quaternion.LookRotation(cameraTransform.forward);
