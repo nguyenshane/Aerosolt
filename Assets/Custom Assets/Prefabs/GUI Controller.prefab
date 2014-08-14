@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df58de35e63f7b34caf1608626174bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oculusEnabled: 0
+  oculusEnabled: 1
   showFramerate: 0
   dynamicMinimap: 0
   background:
