@@ -62,7 +62,7 @@ public class Player : MonoBehaviour {
 		layerMask = (1 << 8) | (1 << 11);
 		layerMask = ~layerMask;
 
-		cameraTransform = GameObject.Find("OVRCameraController").transform;
+		cameraTransform = GameObject.FindGameObjectWithTag("Camera").transform;
 		reticuleTransform = GameObject.Find("Reticule").transform;
 	}
 	
@@ -73,8 +73,10 @@ public class Player : MonoBehaviour {
 
 		if (!aiming) {
 			Physics.Raycast(cameraTransform.position, reticuleTransform.position - cameraTransform.position, out hitinfo, Mathf.Infinity, layerMask);
-			Quaternion targetRotation = Quaternion.LookRotation(hitinfo.point - nozzle.position);
-			transform.rotation = targetRotation;
+			if (hitinfo.distance > 1.0f) {
+				Quaternion targetRotation = Quaternion.LookRotation(hitinfo.point - nozzle.position);
+				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 1.0f);
+			}
 		} else transform.rotation = Quaternion.LookRotation(cameraTransform.forward);
 
 

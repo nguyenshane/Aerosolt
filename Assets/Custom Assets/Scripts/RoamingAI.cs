@@ -98,7 +98,7 @@ public class RoamingAI : MonoBehaviour {
 
 				if (wpDirection.magnitude <= 2.0f) {
 					findNextWaypoint();
-					wpDirection = (nextWaypoint.transform.position - transform.position + (Random.insideUnitSphere * 2));
+					if (nextWaypoint != null) wpDirection = (nextWaypoint.transform.position - transform.position + (Random.insideUnitSphere * 2));
 				}
 				wpDirection.Normalize();
 				targetDir = wpDirection;
@@ -155,7 +155,6 @@ public class RoamingAI : MonoBehaviour {
 		nextWaypoint = null;
 
 		for (int i = 0; i < 4; i++) {
-			Debug.Log(adjacentWaypoints[waypointPicker[i]]);
 			if (adjacentWaypoints[waypointPicker[i]] != null) {
 				nextWaypoint = adjacentWaypoints[i];
 				break;

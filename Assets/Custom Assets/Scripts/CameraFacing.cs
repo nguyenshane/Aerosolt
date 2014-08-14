@@ -7,7 +7,7 @@ public class CameraFacing : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		cameraTransform = GameObject.Find("OVRCameraController").gameObject.transform;
+		cameraTransform = GameObject.FindGameObjectWithTag("Camera").transform;
 	}
 	
 	// Update is called once per frame

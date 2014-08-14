@@ -113,7 +113,7 @@ public class GUIController : MonoBehaviour
 			inactiveMenuItem.fontSize = (int)(inactiveMenuItem.fontSize * screenRatio);
 			spacing = (int)(menuItemSpacing * screenRatio);
 
-			menuItem = new Rect(screenWidth / 2 - 100 * screenRatio, screenHeight / 2 - 20 * screenRatio, 200 * screenRatio, 40 * screenRatio);
+			menuItem = new Rect(screenWidth / 2 - 120 * screenRatio, screenHeight / 2 - 20 * screenRatio, 240 * screenRatio, 40 * screenRatio);
 
 			//Standard camera minimap locations
 			
@@ -195,15 +195,15 @@ public class GUIController : MonoBehaviour
 		GUI.DrawTexture(new Rect(screenWidth / 2 - reticuleSize / 2, screenHeight / 2 - reticuleSize / 2, reticuleSize, reticuleSize), reticule, ScaleMode.ScaleToFit);
 
 		//Draw health
-		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4, 60 * screenRatio, 20 * screenRatio), Player.getHP().ToString("F0"), health);
+		GUI.Label(new Rect((int)screenWidth / 4 - 30 * screenRatio, (int)screenHeight / 3 - 10 * screenRatio, 60 * screenRatio, 20 * screenRatio), Player.getHP().ToString("F0"), health);
 
 		//Draw ammo
-		GUI.Label(new Rect((int)screenWidth / 4, (int)screenHeight / 4 + spacing, 60 * screenRatio, 20 * screenRatio), Player.getAmmo().ToString("F0"), ammo);
+		GUI.Label(new Rect((int)screenWidth / 4 - 30 * screenRatio, (int)screenHeight / 3 * 2 - 10 * screenRatio, 60 * screenRatio, 20 * screenRatio), Player.getAmmo().ToString("F0"), ammo);
 		
 		//Draw framerate
 		if (showFramerate) GUI.Label(new Rect(32 * screenRatio, 32 * screenRatio, 400 * screenRatio, 400 * screenRatio), (1 / Time.deltaTime).ToString("F4"));
 
-		if (showMinimap) {
+		//if (showMinimap) {
 			GUI.color = minimapTint;
 			//Draw minimap
 			GUI.DrawTexture(minimapLocation, minimap, ScaleMode.ScaleToFit);
@@ -215,7 +215,7 @@ public class GUIController : MonoBehaviour
 			GUIUtility.RotateAroundPivot(player.transform.eulerAngles.y, new Vector2(indicatorLocation.x + indicatorLocation.width / 2, indicatorLocation.y + indicatorLocation.height / 2));
 			GUI.DrawTexture(indicatorLocation, minimapIndicator, ScaleMode.ScaleToFit);
 			GUI.matrix = backup;
-		}
+		//}
 
 		//Overlay menu
 		if (showingMenu) {

@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df58de35e63f7b34caf1608626174bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oculusEnabled: 1
+  oculusEnabled: 0
   showFramerate: 0
   dynamicMinimap: 0
   background:
@@ -421,7 +421,7 @@ MonoBehaviour:
   minimapAlpha: .75
   minimapIndicator: {fileID: 2800000, guid: 57a96e9f369e7cd40946d0f1bcfc627b, type: 3}
   indicatorScale: 1
-  reticule: {fileID: 2800000, guid: 8c1382987c17e75428acb99f47e98e80, type: 3}
+  reticule: {fileID: 2800000, guid: 3d9ccb2c1abea584bbfa16ba085888fa, type: 3}
   reticuleScale: 1
 --- !u!124 &12400000
 Behaviour:
